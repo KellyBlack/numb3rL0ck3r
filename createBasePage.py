@@ -43,6 +43,6 @@ page = ""
 for row in fp:
     page += row
 
-print(page)
+#print(page)
 t = Template(page)
 print(t)
