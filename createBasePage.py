@@ -44,5 +44,5 @@ for row in fp:
     page += row
 
 #print(page)
-t = Template(page)
+t = Template(page,searchList=[{"templateDir":"template"}])
 print(t)
