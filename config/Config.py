@@ -57,7 +57,7 @@ class Config :
 
 
     # method called when a class item is created.
-    def __init__(self,configFileName="config.dat") :
+    def __init__(self,configFileName="config/config.dat") :
 
 	# Set the file name that is the configuration file.
 	self.configFileName = configFileName

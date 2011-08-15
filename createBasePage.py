@@ -35,8 +35,16 @@
 #
 
 
+# Cheetah template classes
 from Cheetah.Template import Template
 
+
+#local classes for Numb3r L0ck3r
+from config.Config import Config
+
+
+localConfig = Config()
+localConfig.parseConfigurationFile()
 
 fp = open("template/basePage.tmpl","r")
 page = ""
@@ -45,5 +53,7 @@ for row in fp:
 
 #print(page)
 t = Template(page,searchList=[{"templateDir":"template",
-			       "documentDir":"/numb3rL0ck3r"}])
+			       "documentDir":"/numb3rL0ck3r"},
+			      localConfig.getConfigurationDict()])
+
 print(t)
