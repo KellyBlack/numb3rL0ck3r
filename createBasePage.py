@@ -38,7 +38,7 @@
 from Cheetah.Template import Template
 
 
-fp = open("basePage.tmpl","r")
+fp = open("template/basePage.tmpl","r")
 page = ""
 for row in fp:
     page += row
