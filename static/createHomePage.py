@@ -33,6 +33,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #
+import sys
+import os
+sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
 
 # Cheetah template classes
@@ -46,7 +49,7 @@ from config.Config import Config
 localConfig = Config()
 localConfig.parseConfigurationFile()
 
-fp = open("template/basePage.tmpl","r")
+fp = open("template/frontPage.tmpl","r")
 page = ""
 for row in fp:
     page += row
