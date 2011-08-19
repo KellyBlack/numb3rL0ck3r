@@ -37,9 +37,15 @@
 # This is the class used to decide if a client is authorized to access
 # the inforation requested.
 
-import pgdb
+import pgdb   # NOTE - this module does not come with python! It needs
+              # to be installed separately.
+
+import re
 
 class DataBase :
+
+    # Define some commonly used regular expressions here.
+    leadingComma = re.compile(r"^,")   # Identifies a string with a comma in the first position
 
     def __init__(self,password="",database="",host="",user="") :
 	self.setPassword(password)
@@ -105,28 +111,45 @@ class DataBase :
 
     def escapeItems(self,theItems) :
 	
-	if(type(theItems) == dict) :
+	if(type(theItems)==str):
+	    return(pgdb.escape_string(theItems))
+	
+	elif(type(theItems) == dict) :
 	    self.escapeDictionary(theItems)
 
 	elif(type(theItems)==list):
 	    self.escapeList(theItems)
 
-	elif(type(theItems)==str):
-	    return(pgdb.escape_string(theItems))
-	
 	else :
 	    return(pgdb.escape_string(str(theItems)))
+
+	return(None)
+
+
+    def valuesFromDictionary(self,theDict) :
+	to = ""
+	values = ""
+	for key,value in theDict.iteritems():
+	    to += "," + key
+	    values += ",'" + pgdb.escape_string(value) + "'"
+
+	return(self.leadingComma.sub('',to),self.leadingComma.sub('',values))
+
+
+    def valuesFromList(self,theList) :
+	values = ""
+	for value in theList:
+	    values += ",'" + pgdb.escape_string(value) + "'"
+
+	return(self.leadingComma.sub('',values))
+
+
 
 if (__name__ == "__main__") :
 
     db = DataBase()
     d = {"a":"b''","c":"'d"}
-    db.escapeItems(d)
-    print(d)
+    (t,v) = db.valuesFromDictionary(d)
+    print("{0}\n{1}".format(t,v))
 
-    d = ["'a","b'","''c"]
-    db.escapeItems(d)
-    print(d)
-
-    print(db.escapeItems("heas''"))
-    print(db.escapeItems(1))
+    print(db.valuesFromList(["a'","'b","''c'"]))
