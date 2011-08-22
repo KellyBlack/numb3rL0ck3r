@@ -145,6 +145,15 @@ class DataBase :
 	return(self.leadingComma.sub('',values))
 
 
+    # Routine to form the list of items to choose from a query
+    def queryVariables(self,theVariables) :
+	query = ""
+	for item in theVariables:
+	    query += "," + item
+
+	return(" " + self.leadingComma.sub('',query)+ " ")
+
+
     # Routine to concatenate a set of "joins" to form a single
     # string for the joins.
     def formJoin(self,firstTableName,theTables) :
@@ -181,6 +190,8 @@ if (__name__ == "__main__") :
     (t,v) = db.valuesFromDictionary(d)
     #print("{0}\n{1}".format(t,v))
     #print(db.valuesFromList(["a'","'b","''c'"]))
+
+    print(db.queryVariables(["a.1","a.2","b.4"]))
 
     print(db.formJoin("first",[["second","",[["first","c1","second","c2"],["first","c2","third","c3"]]],
 			       ["third","RIGHT",[["first","c2","third","c4"],["third","c4","second","c2"]] ] ]))
