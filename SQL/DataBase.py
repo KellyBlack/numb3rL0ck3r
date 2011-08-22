@@ -45,8 +45,9 @@ import re
 class DataBase :
 
     # Define some commonly used regular expressions here.
-    leadingComma = re.compile(r"^,")    # Identifies a string with a comma in the first position
-    trailingAND  = re.compile(r"AND $") # Identifies the string "AND " at the end of a line
+    leadingComma   = re.compile(r"^,")       # Identifies a string with a comma in the first position
+    trailingAND    = re.compile(r"AND $")    # Identifies the string "AND " at the end of a line
+    checkSemiColon = re.compile(r";[ \t]*$") # Identify that there is a trailing semi-colon
 
     def __init__(self,password="",database="",host="",user="") :
 	self.setPassword(password)
@@ -182,6 +183,19 @@ class DataBase :
 	return(join)
 
 
+    # Routine to create a transaction. A list is given that holds each command
+    def formTransaction(self,theCommands) :
+	transaction = "BEGIN;"
+	for command in theCommands:
+	    if(self.checkSemiColon.search(command)) :
+		transaction += command 
+	    else :
+		transaction += command + ";"
+
+	return(transaction + "COMMIT;")
+    
+    
+
     
 if (__name__ == "__main__") :
 
@@ -195,3 +209,5 @@ if (__name__ == "__main__") :
 
     print(db.formJoin("first",[["second","",[["first","c1","second","c2"],["first","c2","third","c3"]]],
 			       ["third","RIGHT",[["first","c2","third","c4"],["third","c4","second","c2"]] ] ]))
+
+    print(db.formTransaction(["select;","next; ","third","fourth; \t","final "]))
