@@ -45,7 +45,8 @@ import re
 class DataBase :
 
     # Define some commonly used regular expressions here.
-    leadingComma = re.compile(r"^,")   # Identifies a string with a comma in the first position
+    leadingComma = re.compile(r"^,")    # Identifies a string with a comma in the first position
+    trailingAND  = re.compile(r"AND $") # Identifies the string "AND " at the end of a line
 
     def __init__(self,password="",database="",host="",user="") :
 	self.setPassword(password)
@@ -144,12 +145,42 @@ class DataBase :
 	return(self.leadingComma.sub('',values))
 
 
+    # Routine to concatenate a set of "joins" to form a single
+    # string for the joins.
+    def formJoin(self,firstTableName,theTables) :
+	# theTables is a list:
+	#[ ....., [table name to join, type (left/right/full/- leave blank to make an "inner"),
+	#         [ [table 1,variable name,table 2,variabe name],[...]]], .... ]
+	#
 
+	join = firstTableName + " "
+	for table in theTables:
+	    #print(table)
+	    if(len(table)==3) :
+		if(table[1]) :
+		    join += table[1] + " join "
+		else :
+		    join += "inner join "
+
+		join += table[0] + " on ("
+		for tableVars in table[2] :
+		    if(len(tableVars) >= 4) :
+			join += tableVars[0] + "." + tableVars[1] + \
+				"=" + tableVars[2] + "." + tableVars[3] + " AND "
+
+		join = self.trailingAND.sub(') ',join)
+		
+	return(join)
+
+
+    
 if (__name__ == "__main__") :
 
     db = DataBase()
     d = {"a":"b''","c":"'d"}
     (t,v) = db.valuesFromDictionary(d)
-    print("{0}\n{1}".format(t,v))
+    #print("{0}\n{1}".format(t,v))
+    #print(db.valuesFromList(["a'","'b","''c'"]))
 
-    print(db.valuesFromList(["a'","'b","''c'"]))
+    print(db.formJoin("first",[["second","",[["first","c1","second","c2"],["first","c2","third","c3"]]],
+			       ["third","RIGHT",[["first","c2","third","c4"],["third","c4","second","c2"]] ] ]))
