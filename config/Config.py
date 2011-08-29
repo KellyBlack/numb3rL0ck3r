@@ -35,12 +35,13 @@
 #
 
 
+from ConfigParser import *
 import re
 
 
 # Class to parse and keep track of the configuration parameters for
 # the web site.
-class Config :
+class Config(SafeConfigParser):
 
 
 
@@ -58,10 +59,6 @@ class Config :
 
     # method called when a class item is created.
     def __init__(self,configFileName="config/config.dat") :
-
-	# Set the file name that is the configuration file.
-	self.configFileName = configFileName
-
 	# Set the list of configurable options.
 	self.configurationOptions = \
 	       {'documentDir'        : '/',
@@ -72,42 +69,58 @@ class Config :
 		}
 
 
+	ConfigParser.__init__(self,self.configurationOptions)
+
+	# Set the file name that is the configuration file.
+	self.setConfigurationFile(configFileName)
+
+
     # Return a pointer to the configuration file
     def getConfigurationDict(self) :
 	return(self.configurationOptions)
 
+    # set the configuration file name
+    def setConfigurationFile(self,name) :
+	self.configFileName = name
+
+    # get the configuration file name
+    def getConfigurationFile(self) :
+	return(self.configFileName)
 
     # Read the configuration file and parse the items in the file.
     def parseConfigurationFile(self) :
 
 	try:
-	    fp = open(self.configFileName,"r")
-
-	except IOError:
-	    # *TODO* make an error log here
+	    files = self.read(self.getConfigurationFile())
+	except (ParsingError,NoSectionError,NoOptionError,InterpolationError,
+		InterpolationDepthError,InterpolationSyntaxError,MissingSectionHeaderError),err:
+	    print("Config.parseConfigurationFile - Error reading the configuration file. The configuration file was ignored.\n{0}".format(err))
 	    return(False)
 
-	# The file exists. Read each line and parse the line.
-	for row in fp:
-	    row = Config.clearComment.sub('',row).rstrip()   # Get rid of comments.
+	if(len(files) == 0) :
+	    print("Config.parseConfigurationFile - Error reading the configuration file. The file was not found.")
+	    return(False)
+	
+	#sections = self.sections()
+	#for name in sections:
+	#    print("Section: {0}".format(name))
+
+	if(not self.has_section('site')) :
+	    print("Config.parseConfigurationFile - Error reading the configuration file. The configuration file is missing a 'site' section.")
+	    return(False)
 	    
-	    if(len(row)>0) :
-		# This is a non empty row. Split up the left and right
-		# sides which are separated by an "equal sign."
-		left  = Config.leftOfEqualSign.sub('',row)
-		right = Config.rightOfEqualSign.sub('',row)
-		right = Config.stripRight.sub('',right)
-		right = Config.stripLeft.sub('',right)
+	for name,value in self.configurationOptions.iteritems() :
+	    #print("checking {0}".format(name))
 
-		if(left in self.configurationOptions) :
-		    # This is a valid option.
-		    self.configurationOptions[left] = right
-
-		if(self.DEBUG) :
-		    print("Line: {0} - {1}/{2}".format(row,left,right))
+	    if(self.has_option('site',name)) :
+		value = self.get('site',name)
+		if(value) :
+		    self.configurationOptions[name] = value
 
 
-	print(self.configurationOptions)
+	#print("Values: {0}".format(self.configurationOptions))
+	return(True)
+    
 
 
 if (__name__ =='__main__') :

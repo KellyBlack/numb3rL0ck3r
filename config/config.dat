@@ -1,21 +1,22 @@
-# Numb3r L0ck3r configuration file
-#
-# Anything after a "#" is ignored.
-#
-# each option is of the form
-#
-#     name = value
-#
-# name is the name of the variable, and value is its value
-#
+; Numb3r L0ck3r configuration file
+;
+; Anything after a ";" is ignored.
+;
+; each option is of the form
+;
+;     name = value
+;
+; name is the name of the variable, and value is its value
+;
 
-# variables associated with the directory structure
-documentDir = "/numb3rL0ck3r/"     # Note that it ends with the "/"
-cgiDir      = "/cgi-bin/"          # Note that it ends with the "/"
-cssDir      = "/numb3rL0ck3r/css/" # Note that it ends with the "/"
+[site]
+; variables associated with the directory structure
+documentDir = /numb3rL0ck3r/     ; Note that it ends with the "/"
+cgiDir      = /cgi-bin/          ; Note that it ends with the "/"
+cssDir      = /numb3rL0ck3r/css/ ; Note that it ends with the "/"
 
 
-# Information local to the site
+; Information local to the site
 administratorName  = Kelly Black
 administratorEmail = admin@www.numb3rl0ck3r.org
 
