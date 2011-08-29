@@ -34,8 +34,8 @@
 #
 #
 
-from datetime import *
-from datetime import timedelta
+#from datetime import *
+#from datetime import timedelta
 
 
 class HTTP :
@@ -85,7 +85,6 @@ class HTTP :
 	if(path) :
 	    cookie += "; Path=" + path
 
-	print(cookie)
 	return(cookie)
 
     def printContentType(self) :
@@ -106,7 +105,7 @@ if (__name__ == "__main__") :
     http.setPath("/")
     http.setDomain("www.here.com")
     http.setCookie("one","two",True)
-    http.printHeader()
+    http.printHeader(True)
 	
 	
 
