@@ -22,3 +22,18 @@ administratorEmail = admin@www.numb3rl0ck3r.org
 
 
 
+[database]
+; variables associated with the database
+; Specify the passwords that you want to use for the three database roles.
+
+; The regular user is used when students access the site. The admin
+; password us used by administrative users. The owner password is used
+; by the admins when doing with the most sensitive information and
+; tasks.
+
+regularDataBaseUserPassord  = changethispassword
+adminDataBasePassword       = realychangethispassword
+ownerDataBasePassword       = realyrealychangethispassword
+
+
+

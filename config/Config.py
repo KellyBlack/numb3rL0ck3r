@@ -58,9 +58,9 @@ class Config(SafeConfigParser):
 
 
     # method called when a class item is created.
-    def __init__(self,configFileName="config/config.dat") :
+    def __init__(self,configFileName="config.dat") :
 	# Set the list of configurable options.
-	self.configurationOptions = \
+	self.siteConfigurationOptions = \
 	       {'documentDir'        : '/',
 		'cgiDir'             : '/cgi-bin',
 		'cssDir'             : '/css',
@@ -68,8 +68,14 @@ class Config(SafeConfigParser):
 		'administratorEmail' : ''
 		}
 
+	self.databaseOptions = \
+		{'regularDataBaseUserPassord' : '',
+		 'adminDataBasePassword'      : '',
+		 'ownerDataBasePassword'      : ''
+		}
 
-	ConfigParser.__init__(self,self.configurationOptions)
+
+	ConfigParser.__init__(self)
 
 	# Set the file name that is the configuration file.
 	self.setConfigurationFile(configFileName)
@@ -77,7 +83,12 @@ class Config(SafeConfigParser):
 
     # Return a pointer to the configuration file
     def getConfigurationDict(self) :
-	return(self.configurationOptions)
+	return(self.siteConfigurationOptions)
+    
+    # Return a pointer to the database configuration file
+    def getDatabaseConfigurationDict(self) :
+	return(self.databaseOptions)
+
 
     # set the configuration file name
     def setConfigurationFile(self,name) :
@@ -90,7 +101,10 @@ class Config(SafeConfigParser):
     # Read the configuration file and parse the items in the file.
     def parseConfigurationFile(self) :
 
+	correctFile = True
+	
 	try:
+	    # Open the file to read
 	    files = self.read(self.getConfigurationFile())
 	except (ParsingError,NoSectionError,NoOptionError,InterpolationError,
 		InterpolationDepthError,InterpolationSyntaxError,MissingSectionHeaderError),err:
@@ -98,6 +112,7 @@ class Config(SafeConfigParser):
 	    return(False)
 
 	if(len(files) == 0) :
+	    # No files were found.
 	    print("Config.parseConfigurationFile - Error reading the configuration file. The file was not found.")
 	    return(False)
 	
@@ -105,24 +120,48 @@ class Config(SafeConfigParser):
 	#for name in sections:
 	#    print("Section: {0}".format(name))
 
-	if(not self.has_section('site')) :
-	    print("Config.parseConfigurationFile - Error reading the configuration file. The configuration file is missing a 'site' section.")
+	# Get the information from the "site" section.
+	correctFile = correctFile and self.getSectionInformation(
+	    'site',self.siteConfigurationOptions)
+
+	# Get the information from the "database" section.
+	correctFile = correctFile and self.getSectionInformation(
+	    'database',self.databaseOptions)
+
+	#print("Values: {0}".format(self.siteConfigurationOptions))
+	return(correctFile)
+
+
+
+    # Method to get all of the relevant variables for a specific
+    # section of the configuration file. The results are kept in the
+    # keyword dictionary.
+    def getSectionInformation(self,section,keyword) :
+
+
+	if(not self.has_section(section)) :
+	    # This section is missing from the configuration file.
+	    print("Config.parseConfigurationFile - Error reading the configuration file. The configuration file is missing a '{0}' section.".format(section))
 	    return(False)
 	    
-	for name,value in self.configurationOptions.iteritems() :
+	for name,value in keyword.iteritems() :
+	    # Check each name specified in the dictionary. Check to
+	    # see what its value (if any) is in the config file.
 	    #print("checking {0}".format(name))
 
-	    if(self.has_option('site',name)) :
-		value = self.get('site',name)
+	    if(self.has_option(section,name)) :
+		value = self.get(section,name)
 		if(value) :
-		    self.configurationOptions[name] = value
+		    keyword[name] = value
 
-
-	#print("Values: {0}".format(self.configurationOptions))
 	return(True)
-    
 
 
 if (__name__ =='__main__') :
     conf = Config()
-    conf.parseConfigurationFile()
+    if(conf.parseConfigurationFile()) :
+	print(conf.siteConfigurationOptions)
+	print(conf.databaseOptions)
+
+    else:
+	print("There was an error")
