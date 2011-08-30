@@ -1,3 +1,6 @@
+#!/usr/bin/python
+
+#
 #
 # Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
@@ -29,21 +32,40 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-#
-
-# First create the new users
-CREATE ROLE numb3rK33p3r WITH LOGIN PASSWORD '$regularDataBaseUserPassord';
-CREATE ROLE numb3rK33p3rAdmin WITH LOGIN PASSWORD '$adminDataBasePassword';
-CREATE ROLE numb3rL0ck3rAdmin WITH LOGIN PASSWORD '$ownerDataBasePassword';
 
 
-# Create the database
-CREATE DATABASE numb3rL0ck3r OWNER numb3rL0ck3rAdmin;
-EXEC SQL CONNECT TO numb3rL0ck3r;
+# script to initialize the sql used to create the initial database.
 
-# Grant the requisite permissions for each new user
-GRANT SELECT,INSERT,UPDATE ON numb3rL0ck3r  to numb3rK33p3r;
-GRANT SELECT,INSERT,UPDATE,DELETE ON numb3rL0ck3r to numb3rK33p3rAdmin;
-GRANT ALL PRIVILEGES ON numb3rL0ck3r TO numb3rL0ck3rAdmin;
+import sys
+import os
+sys.path.append( os.path.join( os.getcwd(), '..' ) )
+
+# Cheetah template classes
+from Cheetah.Template import Template
 
 
+#local classes for Numb3r L0ck3r
+from config.Config import Config
+
+# The database class. Used to escape some sensitive information.
+from DataBase import DataBase
+
+config = Config('../config/config.dat')
+db = DataBase()
+
+if(config.parseConfigurationFile()) :
+    # The config file was successfully parsed.
+    databaseInfo = config.getDatabaseConfigurationDict()
+
+    fp = open("create.sql.template","r")
+    page = ""
+    for row in fp:
+	page += row
+
+    db.escapeDictionary(databaseInfo)
+    template = Template(page,searchList=databaseInfo)
+    print(template)
+
+else :
+    print("There was an error reading the configuration file.\n" +
+	  "The SQL script was not created.")
