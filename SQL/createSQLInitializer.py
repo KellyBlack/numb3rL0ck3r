@@ -50,21 +50,31 @@ from config.Config import Config
 # The database class. Used to escape some sensitive information.
 from DataBase import DataBase
 
+# Create objects from the configuration and database classes
 config = Config('../config/config.dat')
 db = DataBase()
 
+# Parse the config file.
 if(config.parseConfigurationFile()) :
     # The config file was successfully parsed.
     databaseInfo = config.getDatabaseConfigurationDict()
 
+    # read in the create.sql template.
     fp = open("create.sql.template","r")
     page = ""
     for row in fp:
 	page += row
+    fp.close()
 
+    # Escape the passwords to avoid any potentially embarassing sql
+    # problems. Then create the new create.sql text.
     db.escapeDictionary(databaseInfo)
     template = Template(page,searchList=databaseInfo)
-    print(template)
+
+    # Write the text to a file.
+    fp = open("create.sql","w")
+    fp.write(str(template))
+    fp.close()
 
 else :
     print("There was an error reading the configuration file.\n" +
