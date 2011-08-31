@@ -17,8 +17,8 @@ cssDir      = /numb3rL0ck3r/css/ ; Note that it ends with the "/"
 
 
 ; Information local to the site
-administratorName  = Kelly Black
-administratorEmail = admin@www.numb3rl0ck3r.org
+administratorName     = Kelly Black
+administratorEmail    = admin@www.numb3rl0ck3r.org
 
 
 
@@ -37,3 +37,24 @@ ownerDataBasePassword       = realyrealychangethispassword
 
 
 
+[security]
+; variables associated with various security parameters. Some of these
+; you need to keep and others you should delete after the initial set
+; up. Read this carefully!
+
+administratorPassword = changethisthendeleteit! ; This is only used
+						; for set up. Once the
+						; site is set up
+						; delete this line!
+
+;
+; passwordSecurityHash variable
+; The site uses a HMAC-SHA1 for authentication which requires a pass
+; code. This is used to keep the password as well as generate
+; cookies. You should change this initially, but be very careful about
+; changing it later. If you change this every password on the site
+; will no longer match. This will force every user to get a new
+; password. If you want to make sure everyone changes their password
+; then changing this will force it to happen. It will also fill up
+; your inbox with complaints!
+passwordSecurityHash = 8384C33871E12A767E971491314BB099

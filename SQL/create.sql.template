@@ -47,3 +47,34 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON numb3rL0ck3r to numb3rK33p3rAdmin;
 GRANT ALL PRIVILEGES ON numb3rL0ck3r TO numb3rL0ck3rAdmin;
 
 
+# Read in the file to create the tables
+\i initialize.sql
+
+
+insert into Numb3rL0ck3r_institution 
+       (institutionid,institutionName,institutionDescription) 
+       values (1,'$homeInstitutionName','$homeInstitutionDescription');
+insert into Numb3rL0ck3r_user (username,password,email,institutionid) 
+       values ('admin','$adminPassword','$administratorEmail',1);
+
+
+insert into Numb3rL0ck3r_administrativeRoles
+       (administrativeRoleTitle,administrativeRolesDescription) 
+       values ('site admin','Site administrator');
+
+insert into Numb3rL0ck3r_administrativeRoles
+       (administrativeRoleTitle,administrativeRolesDescription) 
+       values ('course admin','Course Administrator');
+
+insert into Numb3rL0ck3r_administrativeRoles
+       (administrativeRoleTitle,administrativeRolesDescription) 
+       values ('teacher','Responsible for a course.');
+
+insert into Numb3rL0ck3r_administrativeRoles
+       (administrativeRoleTitle,administrativeRolesDescription) 
+       values ('teaching/lab assistant','Helping a teacher administer a course');
+
+insert into Numb3rL0ck3r_administrativeRoles
+       (administrativeRoleTitle,administrativeRolesDescription) 
+       values ('student','A student enrolled in a course');
+
