@@ -43,24 +43,34 @@ sys.path.append( os.path.join( os.getcwd(), '..' ) )
 # Cheetah template classes
 from Cheetah.Template import Template
 
-
 #local classes for Numb3r L0ck3r
 from config.Config import Config
 
 # The database class. Used to escape some sensitive information.
 from DataBase import DataBase
 
+# The authorization class to get the password hash for the admin user
+from User.Authorize import Authorize
+
+
+
 # Create objects from the configuration and database classes
 config = Config('../config/config.dat')
-db = DataBase()
 
 # Parse the config file.
 if(config.parseConfigurationFile()) :
     # The config file was successfully parsed.
-    siteInfo     = config.getConfigurationDict()
-    databaseInfo = config.getDatabaseConfigurationDict()
-    siteInfo.update(databaseInfo)
-    siteInfo['adminPassword'] = 'CHANGE ME!'
+    db = DataBase()                                      # Create the db object
+    siteInfo     = config.getConfigurationDict()         # Get the site variables
+    databaseInfo = config.getDatabaseConfigurationDict() # get the db variables
+    securityInfo = config.getSecurityConfigurationDict() # get the security variables
+    siteInfo.update(databaseInfo)                        # Add all the dicts into one master
+    siteInfo.update(securityInfo)
+
+    # Set the admin password
+    auth = Authorize()
+    auth.setPassPhrase(securityInfo['passwordSecurityHash'])
+    siteInfo['adminPassword'] = auth.getHash(securityInfo['administratorPassword'])
 
     # read in the create.sql template.
     fp = open("create.sql.template","r")

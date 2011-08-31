@@ -76,6 +76,10 @@ class Config(SafeConfigParser):
 		 'ownerDataBasePassword'       : ''
 		}
 
+	self.securityOptions = \
+		{'administratorPassword' : '',
+		 'passwordSecurityHash'  : ''
+		 }
 
 	ConfigParser.__init__(self)
 
@@ -90,6 +94,10 @@ class Config(SafeConfigParser):
     # Return a pointer to the database configuration file
     def getDatabaseConfigurationDict(self) :
 	return(self.databaseOptions)
+
+    # Return a pointer to the security configuration file
+    def getSecurityConfigurationDict(self) :
+	return(self.securityOptions)
 
 
     # set the configuration file name
@@ -129,6 +137,9 @@ class Config(SafeConfigParser):
 	# Get the information from the "database" section.
 	correctFile = correctFile and self.getSectionInformation(
 	    'database',self.databaseOptions)
+
+	correctFile = correctFile and self.getSectionInformation(
+	    'security',self.securityOptions)
 
 	#print("Values: {0}".format(self.siteConfigurationOptions))
 	return(correctFile)
