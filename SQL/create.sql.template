@@ -32,7 +32,7 @@
 #
 
 # First create the new users
-CREATE ROLE numb3rK33p3r WITH LOGIN PASSWORD '$regularDataBaseUserPassord';
+CREATE ROLE numb3rK33p3r WITH LOGIN PASSWORD '$regularDataBaseUserPassword';
 CREATE ROLE numb3rK33p3rAdmin WITH LOGIN PASSWORD '$adminDataBasePassword';
 CREATE ROLE numb3rL0ck3rAdmin WITH LOGIN PASSWORD '$ownerDataBasePassword';
 

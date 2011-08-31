@@ -57,7 +57,10 @@ db = DataBase()
 # Parse the config file.
 if(config.parseConfigurationFile()) :
     # The config file was successfully parsed.
+    siteInfo     = config.getConfigurationDict()
     databaseInfo = config.getDatabaseConfigurationDict()
+    siteInfo.update(databaseInfo)
+    siteInfo['adminPassword'] = 'CHANGE ME!'
 
     # read in the create.sql template.
     fp = open("create.sql.template","r")
@@ -68,8 +71,8 @@ if(config.parseConfigurationFile()) :
 
     # Escape the passwords to avoid any potentially embarassing sql
     # problems. Then create the new create.sql text.
-    db.escapeDictionary(databaseInfo)
-    template = Template(page,searchList=databaseInfo)
+    db.escapeDictionary(siteInfo)
+    template = Template(page,searchList=siteInfo)
 
     # Write the text to a file.
     fp = open("create.sql","w")

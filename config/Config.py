@@ -65,13 +65,15 @@ class Config(SafeConfigParser):
 		'cgiDir'             : '/cgi-bin',
 		'cssDir'             : '/css',
 		'administratorName'  : '',
-		'administratorEmail' : ''
+		'administratorEmail' : '',
+		'homeInstitutionName'        : '',
+		'homeInstitutionDescription' : ''
 		}
 
 	self.databaseOptions = \
-		{'regularDataBaseUserPassord' : '',
-		 'adminDataBasePassword'      : '',
-		 'ownerDataBasePassword'      : ''
+		{'regularDataBaseUserPassword' : '',
+		 'adminDataBasePassword'       : '',
+		 'ownerDataBasePassword'       : ''
 		}
 
 
@@ -137,7 +139,7 @@ class Config(SafeConfigParser):
     # section of the configuration file. The results are kept in the
     # keyword dictionary.
     def getSectionInformation(self,section,keyword) :
-
+	readStatus = True
 
 	if(not self.has_section(section)) :
 	    # This section is missing from the configuration file.
@@ -150,11 +152,16 @@ class Config(SafeConfigParser):
 	    #print("checking {0}".format(name))
 
 	    if(self.has_option(section,name)) :
-		value = self.get(section,name)
+		try:
+		    value = self.get(section,name)
+		except InterpolationSyntaxError, err:
+		    print("Config.getSectionInformation - There was an error in formatting a variable value: {0}".format(err))
+		    readStatus = False
+		    
 		if(value) :
 		    keyword[name] = value
 
-	return(True)
+	return(readStatus)
 
 
 if (__name__ =='__main__') :
