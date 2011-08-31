@@ -37,6 +37,9 @@
 # This is the class used to decide if a client is authorized to access
 # the inforation requested.
 
+import hmac
+import hashlib
+
 class Authorize :
 
     def __init__(self,passPhrase="",hash="") :
@@ -46,13 +49,40 @@ class Authorize :
 
     def setPassPhrase(self,value):
 	self.passPhrase = value
+	self.digest = hmac.new(value,'',hashlib.sha1)
+
+    def getPassPhrase(self) :
+	return(self.passPhrase)
+
+    def resetDigest(self) :
+	#print("Using passphrase: {0}".format(self.getPassPhrase()))
+	self.digest = hmac.new(self.getPassPhrase(),'',hashlib.sha1)
 
     def setRemoteHash(self,hash) :
 	self.remoteHash = hash
 
-    def isAuthorized(self,message,hash) :
-	return(self.hmacSHA1(message,hash))
+    def getHash(self,message) :
+	self.resetDigest()
+	self.digest.update(message)
+	return(self.digest.hexdigest())
 
-    def hmacSHA1(self,message,hash) :
+    def isAuthorized(self,message,hash) :
+	#print("New hash: {0} sent hash: {1}".format(self.getHash(message),hash))
+	return(self.getHash(message)==hash)
+
+    def hmacSHA1(self,message) :
 	return(False)
 
+
+if (__name__ =='__main__') :
+    auth = Authorize()
+    auth.setPassPhrase('123')
+    hash = auth.getHash('hello')
+    print(hash)
+    print(type(hash))
+    if(auth.isAuthorized('hello',hash)) :
+	print("it is good")
+
+    if(auth.isAuthorized('hello','bubba')) :
+	print("it is horribly wrong")
+    
