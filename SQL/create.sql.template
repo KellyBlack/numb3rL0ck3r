@@ -1,80 +1,80 @@
-#
-# Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-#
-#
-#  * Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following
-#    disclaimer.
-#
-#  * Redistributions in binary form must reproduce the above
-#    copyright notice, this list of conditions and the following
-#    disclaimer in the documentation and/or other materials provided with
-#    the distribution.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-# COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
-#
-#
+--
+-- Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following
+--    disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above
+--    copyright notice, this list of conditions and the following
+--    disclaimer in the documentation and/or other materials provided with
+--    the distribution.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+-- COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+--
+--
 
-# First create the new users
-CREATE ROLE numb3rK33p3r WITH LOGIN PASSWORD '$regularDataBaseUserPassword';
-CREATE ROLE numb3rK33p3rAdmin WITH LOGIN PASSWORD '$adminDataBasePassword';
-CREATE ROLE numb3rL0ck3rAdmin WITH LOGIN PASSWORD '$ownerDataBasePassword';
-
-
-# Create the database
-CREATE DATABASE numb3rL0ck3r OWNER numb3rL0ck3rAdmin;
-EXEC SQL CONNECT TO numb3rL0ck3r;
-
-# Grant the requisite permissions for each new user
-GRANT SELECT,INSERT,UPDATE ON numb3rL0ck3r  to numb3rK33p3r;
-GRANT SELECT,INSERT,UPDATE,DELETE ON numb3rL0ck3r to numb3rK33p3rAdmin;
-GRANT ALL PRIVILEGES ON numb3rL0ck3r TO numb3rL0ck3rAdmin;
+-- First create the new users
+CREATE ROLE $regularDataBaseUser WITH LOGIN PASSWORD '$regularDataBaseUserPassword';
+CREATE ROLE $ownerDataBase WITH LOGIN PASSWORD '$ownerDataBasePassword';
 
 
-# Read in the file to create the tables
+-- Create the database
+CREATE DATABASE $databaseName OWNER $ownerDataBase;
+\l
+\c $databaseName
+
+
+-- Read in the file to create the tables
 \i initialize.sql
 
 
-insert into Numb3rL0ck3r_institution 
+-- Grant the requisite permissions for each new user
+GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA userInfo to $regularDataBaseUser;
+GRANT ALL PRIVILEGES ON DATABASE $databaseName TO $ownerDataBase;
+
+
+insert into admin.Numb3rL0ck3r_institution 
        (institutionid,institutionName,institutionDescription) 
        values (1,'$homeInstitutionName','$homeInstitutionDescription');
-insert into Numb3rL0ck3r_user (username,password,email,institutionid) 
+insert into userInfo.Numb3rL0ck3r_user (username,password,email,institutionid) 
        values ('admin','$adminPassword','$administratorEmail',1);
 
 
-insert into Numb3rL0ck3r_administrativeRoles
+insert into admin.Numb3rL0ck3r_administrativeRoles
        (administrativeRoleTitle,administrativeRolesDescription) 
        values ('site admin','Site administrator');
 
-insert into Numb3rL0ck3r_administrativeRoles
+insert into admin.Numb3rL0ck3r_administrativeRoles
        (administrativeRoleTitle,administrativeRolesDescription) 
        values ('course admin','Course Administrator');
 
-insert into Numb3rL0ck3r_administrativeRoles
+insert into admin.Numb3rL0ck3r_administrativeRoles
        (administrativeRoleTitle,administrativeRolesDescription) 
        values ('teacher','Responsible for a course.');
 
-insert into Numb3rL0ck3r_administrativeRoles
+insert into admin.Numb3rL0ck3r_administrativeRoles
        (administrativeRoleTitle,administrativeRolesDescription) 
        values ('teaching/lab assistant','Helping a teacher administer a course');
 
-insert into Numb3rL0ck3r_administrativeRoles
+insert into admin.Numb3rL0ck3r_administrativeRoles
        (administrativeRoleTitle,administrativeRolesDescription) 
        values ('student','A student enrolled in a course');
 

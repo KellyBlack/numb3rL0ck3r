@@ -71,9 +71,13 @@ class Config(SafeConfigParser):
 		}
 
 	self.databaseOptions = \
-		{'regularDataBaseUserPassword' : '',
-		 'adminDataBasePassword'       : '',
-		 'ownerDataBasePassword'       : ''
+		{'regularDataBaseUser'         : '',
+                 'regularDataBaseUserPassword' : '',
+		 'ownerDataBase'               : '',
+		 'ownerDataBasePassword'       : '',
+                 'databaseName'                : '',
+                 'databaseHost'                : '',
+                 'databasePort'                : ''
 		}
 
 	self.securityOptions = \

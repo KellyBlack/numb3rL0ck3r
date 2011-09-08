@@ -28,15 +28,20 @@ homeInstitutionDescription = The best darn school in Potsdam NY (at the 95%% con
 ; variables associated with the database
 ; Specify the passwords that you want to use for the three database roles.
 
-; The regular user is used when students access the site. The admin
-; password us used by administrative users. The owner password is used
-; by the admins when doing with the most sensitive information and
-; tasks.
+; The regular user is used when students access the site.  The owner
+; password is used by the admins when doing with the most sensitive
+; information and tasks.
 
+regularDataBaseUser          = black
 regularDataBaseUserPassword  = changethispassword
-adminDataBasePassword        = realychangethispassword
-ownerDataBasePassword        = realyrealychangethispassword
 
+ownerDataBase                = root
+ownerDataBasePassword        = realychangethispassword
+
+
+databaseName = numb3rL0ck3r   ; name of the database to connect to
+databaseHost = localhost      ; hostname where the database resides
+databasePort = 5432           ; port number to use for the connection
 
 
 [security]
