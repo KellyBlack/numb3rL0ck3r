@@ -35,7 +35,8 @@
 #
 
 # This is the class used to decide if a client is authorized to access
-# the inforation requested.
+# the inforation requested. It keeps track of the person's access level
+# and the access required for a piece of information.
 
 import hmac
 import hashlib

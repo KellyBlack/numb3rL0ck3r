@@ -51,8 +51,8 @@ databasePort = 5432           ; port number to use for the connection
 
 administratorPassword = changethisthendeleteit! ; This is only used
 ;                                                 for set up. Once the
-;						  site is set up
-;						  delete the line!
+;						  site is set up record it 
+;						  and delete the line!
 
 ;
 ; passwordSecurityHash variable The site uses a HMAC-SHA1 for

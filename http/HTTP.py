@@ -34,6 +34,10 @@
 #
 #
 
+# This class is used to perform standard http functions and is used
+# across most of the cgi scripts. Things like managing cookies and
+# and other details are done in this class.
+
 #from datetime import *
 #from datetime import timedelta
 

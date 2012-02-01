@@ -34,7 +34,9 @@
 #
 #
 
-# This is the class used as a base class for reading xml files.
+# This is the class used as a base class for parsing xml files.
+# It is called by any class that has to take an xml file and
+# traverse its tree.
 
 import xml.sax     #.handler
 
