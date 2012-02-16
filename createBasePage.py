@@ -2,7 +2,7 @@
 
 #
 #
-# Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2011-2012, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -49,11 +49,6 @@ localConfig = Config()
 localConfig.parseConfigurationFile()
 
 t = Template(filename='template/basePage.tmpl',lookup=templateLookup)
-
-#print(page)
-#t = Template(page,searchList=[{"templateDir":"template",
-#			       "documentDir":"/numb3rL0ck3r"},
-#			      localConfig.getConfigurationDict()])
 
 print(t.render(templateDir="template",
 	       **localConfig.getConfigurationDict()))

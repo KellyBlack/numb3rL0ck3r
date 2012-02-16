@@ -2,7 +2,7 @@
 
 #
 #
-# Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2011-2012, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,11 @@ import sys
 import os
 sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
-# Cheetah template classes
-from Cheetah.Template import Template
+# Make template classes
+from mako.template import Template
+from mako.lookup import TemplateLookup
+templateLookup = TemplateLookup(
+    directories=['/home/black/public_html/numb3rL0ck3r/SQL'])
 
 #local classes for Numb3r L0ck3r
 from config.Config import Config
@@ -73,16 +76,12 @@ if(config.parseConfigurationFile()) :
     siteInfo['adminPassword'] = auth.getHash(securityInfo['administratorPassword'])
 
     # read in the create.sql template.
-    fp = open("create.sql.template","r")
-    page = ""
-    for row in fp:
-	page += row
-    fp.close()
+    t = Template(filename='create.sql.template',lookup=templateLookup)
 
     # Escape the passwords to avoid any potentially embarassing sql
     # problems. Then create the new create.sql text.
     db.escapeDictionary(siteInfo)
-    template = Template(page,searchList=siteInfo)
+    template = t.render(**siteInfo)
 
     # Write the text to a file.
     fp = open("create.sql","w")
