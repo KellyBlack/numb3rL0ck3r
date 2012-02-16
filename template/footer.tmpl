@@ -1,7 +1,9 @@
 <div id="footer">
-<p>$administratorName - $administratorEmail</p>
+<p>${administratorName} - ${administratorEmail}</p>
 <p>Numb3r L0ck3r<br/>
-Copyright 2011 - Numb3r L0ck3r<br/>
-#set $copyright = $documentDir +"/copyright.html"
-These web pages are made available under the <a href="$copyright">FreeBSD documentation license.</a></p>
+Copyright 2012 - Numb3r L0ck3r<br/>
+<%
+	copyright = documentDir + "/copyright.html"
+%>
+These web pages are made available under the <a href="${copyright}">FreeBSD documentation license.</a></p>
 </div>

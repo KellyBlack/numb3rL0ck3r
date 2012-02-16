@@ -35,9 +35,11 @@
 #
 
 
-# Cheetah template classes
-from Cheetah.Template import Template
-
+# Make template classes
+from mako.template import Template
+from mako.lookup import TemplateLookup
+templateLookup = TemplateLookup(
+    directories=['/home/black/public_html/numb3rL0ck3r'])
 
 #local classes for Numb3r L0ck3r
 from config.Config import Config
@@ -46,14 +48,12 @@ from config.Config import Config
 localConfig = Config()
 localConfig.parseConfigurationFile()
 
-fp = open("template/basePage.tmpl","r")
-page = ""
-for row in fp:
-    page += row
+t = Template(filename='template/basePage.tmpl',lookup=templateLookup)
 
 #print(page)
-t = Template(page,searchList=[{"templateDir":"template",
-			       "documentDir":"/numb3rL0ck3r"},
-			      localConfig.getConfigurationDict()])
+#t = Template(page,searchList=[{"templateDir":"template",
+#			       "documentDir":"/numb3rL0ck3r"},
+#			      localConfig.getConfigurationDict()])
 
-print(t)
+print(t.render(templateDir="template",
+	       **localConfig.getConfigurationDict()))

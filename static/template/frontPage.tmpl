@@ -1,4 +1,4 @@
-#*doc: Copyright 2011 Kelly Black, (kjblack@gmail.com)
+<%doc> Copyright 2012 Kelly Black, (kjblack@gmail.com)
 
  Redistribution and use in source (HTML, TEMPL, and others) and
  'compiled' forms (HTML, PDF, python, LaTeX and so forth) with or without
@@ -27,13 +27,13 @@
  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. *#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-#include $templateDir + "/preamble.tmpl"
+</%doc><html>
+<%include file="preamble.tmpl"/>
 <body>
-#include $templateDir + "/header.tmpl"
-#include $templateDir + "/loginbox.tmpl"
-#include $templateDir + "/overviewFrontPage.tmpl"
+<%include file="header.tmpl"/>
+<%include file="loginbox.tmpl"/>
+<%include file="overviewFrontPage.tmpl"/>
 <div id="frontPageClassList"></div>
-#include $templateDir + "/footer.tmpl"
+<%include file="footer.tmpl"/>
 </body>
 </html>

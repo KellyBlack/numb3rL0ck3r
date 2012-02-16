@@ -2,7 +2,7 @@
 
 #
 #
-# Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2012, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,11 @@ import os
 sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
 
-# Cheetah template classes
-from Cheetah.Template import Template
+# Make template classes
+from mako.template import Template
+from mako.lookup import TemplateLookup
+templateLookup = TemplateLookup(
+    directories=['/home/black/public_html/numb3rL0ck3r/User'])
 
 
 #local classes for Numb3r L0ck3r
@@ -49,16 +52,11 @@ from config.Config import Config
 localConfig = Config()
 localConfig.parseConfigurationFile()
 
-fp = open("template/loginAttempt.tmpl","r")
-page = ""
-for row in fp:
-    page += row
+t = Template(filename='template/loginAttempt.tmpl',lookup=templateLookup)
 
 #print(page)
-t = Template(page,searchList=[{"templateDir":"template",
-			       "documentDir":"/numb3rL0ck3r",
-			       "usernameError" : True,
-			       "passwordError" : False},
-			      localConfig.getConfigurationDict()])
+print(t.render(templateDir="template",
+	       usernameError=True,
+	       passwordError=False,
+	       **localConfig.getConfigurationDict()))
 
-print(t)
