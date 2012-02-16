@@ -41,8 +41,7 @@ sys.path.append( os.path.join( os.getcwd(), '..' ) )
 # Make template classes
 from mako.template import Template
 from mako.lookup import TemplateLookup
-templateLookup = TemplateLookup(
-    directories=['/home/black/public_html/numb3rL0ck3r/User'])
+templateLookup = TemplateLookup(directories=['./'])
 
 
 #local classes for Numb3r L0ck3r
