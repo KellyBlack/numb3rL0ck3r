@@ -32,8 +32,8 @@
 --
 
 -- First create the new users
-CREATE ROLE ${regularDataBaseUser} WITH LOGIN PASSWORD '${regularDataBaseUserPassword}';
-CREATE ROLE ${ownerDataBase} WITH LOGIN PASSWORD '${ownerDataBasePassword}';
+CREATE ROLE ${regularDataBaseUser} WITH LOGIN PASSWORD ${regularDataBaseUserPassword};
+CREATE ROLE ${ownerDataBase} WITH LOGIN PASSWORD ${ownerDataBasePassword};
 
 
 -- Create the database
@@ -51,11 +51,12 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA userInfo to ${regularD
 GRANT ALL PRIVILEGES ON DATABASE ${databaseName} TO ${ownerDataBase};
 
 
-insert into admin.Numb3rL0ck3r_institution 
+insert into admin.Numb3rL0ck3r_institution
        (institutionid,institutionName,institutionDescription) 
-       values (1,'${homeInstitutionName}','${homeInstitutionDescription}');
-insert into userInfo.Numb3rL0ck3r_user (username,password,email,institutionid) 
-       values ('admin','${adminPassword}','${administratorEmail}',1);
+       values (1,${homeInstitutionName},${homeInstitutionDescription});
+insert into userInfo.Numb3rL0ck3r_user
+       (username,password,email,institutionid) 
+       values ('admin',${adminPassword},${administratorEmail},1);
 
 
 insert into admin.Numb3rL0ck3r_administrativeRoles

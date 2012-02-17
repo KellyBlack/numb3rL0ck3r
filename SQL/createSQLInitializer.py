@@ -79,7 +79,25 @@ if(config.parseConfigurationFile()) :
 
     # Escape the passwords to avoid any potentially embarassing sql
     # problems. Then create the new create.sql text.
-    db.escapeDictionary(siteInfo)
+    #db.escapeDictionary(siteInfo)
+    siteInfo['regularDataBaseUserPassword'] = db.escapeItems(
+        siteInfo['regularDataBaseUserPassword']);
+    siteInfo['ownerDataBasePassword'] = db.escapeItems(
+        siteInfo['ownerDataBasePassword']);
+
+    siteInfo['homeInstitutionName'] = db.escapeItems(
+        siteInfo['homeInstitutionName']);
+
+    siteInfo['homeInstitutionDescription'] = db.escapeItems(
+        siteInfo['homeInstitutionDescription']);
+
+    siteInfo['adminPassword'] = db.escapeItems(
+        siteInfo['adminPassword']);
+
+    siteInfo['administratorEmail'] = db.escapeItems(
+        siteInfo['administratorEmail']);
+
+
     template = t.render(**siteInfo)
 
     # Write the text to a file.

@@ -37,8 +37,9 @@
 # This is the class used to decide if a client is authorized to access
 # the inforation requested.
 
-import pgdb   # NOTE - this module does not come with python! It needs
-              # to be installed separately.
+import psycopg2   # NOTE - this module does not come with python! It needs
+                  # to be installed separately.
+from psycopg2.extensions import adapt
 
 import re
 
@@ -86,10 +87,10 @@ class DataBase :
     
 
     def connect(self) :
-	self.db = pgdb.connect(user=self.getUser(),
-			       password=self.getPassword(),
-			       host=self.getHost(),
-			       database=self.getDatabaseName()) # dsn=None
+	self.db = psycopg2.connect(user=self.getUser(),
+                                   password=self.getPassword(),
+                                   host=self.getHost(),
+                                   database=self.getDatabaseName()) # dsn=None
 
     def close(self) :
 	self.db.close()
@@ -101,20 +102,20 @@ class DataBase :
 
     def escapeDictionary(self,theDict) :
 	for key, value in theDict.iteritems():
-	    theDict[key] = pgdb.escape_string(value)
+	    theDict[key] = psycopg2.extensions.adapt(value)
 
 
     def escapeList(self,theList) :
 	lupe = 0
 	for entry in theList:
-	    theList[lupe] = pgdb.escape_string(entry)
+	    theList[lupe] = psycopg2.extensions.adapt(entry)
 	    lupe += 1
 
 
     def escapeItems(self,theItems) :
 	
 	if(type(theItems)==str):
-	    return(pgdb.escape_string(theItems))
+	    return(psycopg2.extensions.adapt(theItems))
 	
 	elif(type(theItems) == dict) :
 	    self.escapeDictionary(theItems)
@@ -123,7 +124,7 @@ class DataBase :
 	    self.escapeList(theItems)
 
 	else :
-	    return(pgdb.escape_string(str(theItems)))
+	    return(psycopg2.extensions.adapt(str(theItems)))
 
 	return(None)
 
@@ -133,7 +134,7 @@ class DataBase :
 	values = ""
 	for key,value in theDict.iteritems():
 	    to += "," + key
-	    values += ",'" + pgdb.escape_string(value) + "'"
+	    values += ",'" + psycopg2.extensions.adapt(value) + "'"
 
 	return(self.leadingComma.sub('',to),self.leadingComma.sub('',values))
 
@@ -141,7 +142,7 @@ class DataBase :
     def valuesFromList(self,theList) :
 	values = ""
 	for value in theList:
-	    values += ",'" + pgdb.escape_string(value) + "'"
+	    values += ",'" + psycopg2.extensions.adapt(value) + "'"
 
 	return(self.leadingComma.sub('',values))
 
