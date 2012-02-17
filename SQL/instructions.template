@@ -1,0 +1,66 @@
+##
+## Copyright (c) 2011-2012, Kelly Black (kjblack@gmail.com)
+## All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions
+## are met:
+##
+##
+##  * Redistributions of source code must retain the above copyright
+##    notice, this list of conditions and the following
+##    disclaimer.
+##
+##  * Redistributions in binary form must reproduce the above
+##    copyright notice, this list of conditions and the following
+##    disclaimer in the documentation and/or other materials provided with
+##    the distribution.
+##
+## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+## COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+## POSSIBILITY OF SUCH DAMAGE.
+##
+##
+
+You should be ready to initialize the  numb3rL0ck3r database. 
+The following files should now be created in the current direction:
+
+   create.sh  - a shell file to create an empty database.
+   create.sql - A sql file used to create the tables in the database itself.
+
+The shell file should be a very simple script. You are likely better off 
+entering the commands from the command line so that you can more easily
+check for errors. You first need to create two users unless they already exist. 
+
+The passsword for ${regularDataBaseUser} should be ${regularDataBaseUserPassword}
+The password for ${ownerDataBase} should be ${ownerDataBasePassword}
+If these users do not exist then enter the following commands and give the 
+appropriate passwords:
+
+useradd ${regularDataBaseUser}
+useradd ${ownerDataBase}
+
+
+
+You now have to create the empty database. To do so enter the 
+following commands:
+
+createdb ${databaseName} -O ${ownerDataBase}
+
+
+
+After you have created the empty database you must next initialize it 
+with the necessary tables and initial information. You can do so in the
+current directory with the following command:
+
+psql -d ${databaseName} -f create.sql
+
