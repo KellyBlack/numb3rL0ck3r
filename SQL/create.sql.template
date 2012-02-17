@@ -36,8 +36,7 @@ CREATE ROLE ${regularDataBaseUser} WITH LOGIN PASSWORD ${regularDataBaseUserPass
 CREATE ROLE ${ownerDataBase} WITH LOGIN PASSWORD ${ownerDataBasePassword};
 
 
--- Create the database
-CREATE DATABASE ${databaseName} OWNER ${ownerDataBase};
+
 \l
 \c ${databaseName}
 
@@ -47,8 +46,13 @@ CREATE DATABASE ${databaseName} OWNER ${ownerDataBase};
 
 
 -- Grant the requisite permissions for each new user
-GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA userInfo to ${regularDataBaseUser};
-GRANT ALL PRIVILEGES ON DATABASE ${databaseName} TO ${ownerDataBase};
+GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA userInfo TO ${regularDataBaseUser};
+-- select 'grant SELECT,INSERT,UPDATE,DELETE on '||schemaname||'.'||tablename||' to ${regularDataBaseUser};' from pg_tables where schemaname in ('baz', 'quux') order by schemaname, tablename;
+
+select 'grant ALL PRIVILEGES on '||schemaname||'.'||tablename||' to ${ownerDataBase};' from pg_tables where schemaname in ('baz', 'quux') order by schemaname, tablename;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA admin TO ${ownerDataBase};
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA laboratory TO ${ownerDataBase};
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA userInfo TO ${ownerDataBase};
 
 
 insert into admin.Numb3rL0ck3r_institution

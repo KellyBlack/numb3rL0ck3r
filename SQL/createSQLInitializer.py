@@ -75,7 +75,7 @@ if(config.parseConfigurationFile()) :
     siteInfo['adminPassword'] = auth.getHash(securityInfo['administratorPassword'])
 
     # read in the create.sql template.
-    t = Template(filename='create.sql.template',lookup=templateLookup)
+    sqlCreateTemplate = Template(filename='create.sql.template',lookup=templateLookup)
 
     # Escape the passwords to avoid any potentially embarassing sql
     # problems. Then create the new create.sql text.
@@ -98,12 +98,25 @@ if(config.parseConfigurationFile()) :
         siteInfo['administratorEmail']);
 
 
-    template = t.render(**siteInfo)
-
     # Write the text to a file.
     fp = open("create.sql","w")
-    fp.write(str(template))
+    fp.write(str(sqlCreateTemplate.render(**siteInfo)))
     fp.close()
+
+    # Now create the template for creating the database
+    sqlShellCreateDB = Template(filename="create.sh.template",lookup=templateLookup)
+    dataBaseCreateCommand = str(sqlShellCreateDB.render(**siteInfo))
+
+    # Write it to a file amd notify the person about what to do:
+    fp = open("create.sh","w")
+    fp.write(dataBaseCreateCommand)
+    fp.close()
+
+
+    # Write out the instructions to the operator
+    instructions = Template(filename="instructions.template",lookup=templateLookup)
+    print(instructions.render(**siteInfo))
+    
 
 else :
     print("There was an error reading the configuration file.\n" +
