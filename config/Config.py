@@ -58,7 +58,7 @@ class Config(SafeConfigParser):
 
 
     # method called when a class item is created.
-    def __init__(self,configFileName="config.dat") :
+    def __init__(self,configFileName="config/config.dat") :
 	# Set the list of configurable options.
 	self.siteConfigurationOptions = \
 	       {'documentDir'        : '/',

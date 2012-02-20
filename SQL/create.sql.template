@@ -53,6 +53,7 @@ select 'grant ALL PRIVILEGES on '||schemaname||'.'||tablename||' to ${ownerDataB
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA admin TO ${ownerDataBase};
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA laboratory TO ${ownerDataBase};
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA userInfo TO ${ownerDataBase};
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA siteInfo TO ${ownerDataBase};
 
 
 insert into admin.Numb3rL0ck3r_institution

@@ -35,7 +35,7 @@
 #
 
 
-# Make template classes
+# Read in the necessary mako template classes
 from mako.template import Template
 from mako.lookup import TemplateLookup
 templateLookup = TemplateLookup(directories=['./'])
