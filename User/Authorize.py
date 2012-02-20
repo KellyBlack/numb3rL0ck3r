@@ -2,7 +2,7 @@
 
 #
 #
-# Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2011-2012, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -38,14 +38,34 @@
 # the inforation requested. It keeps track of the person's access level
 # and the access required for a piece of information.
 
+# Import the modules necessary for authentication
 import hmac
 import hashlib
+
+# Import the modules necessary for reading the cookies
+import Cookie
+import os
+
 
 class Authorize :
 
     def __init__(self,passPhrase="",hash="") :
+	# Set the authentication parameters
 	self.setPassPhrase(passPhrase)
 	self.setRemoteHash(hash)
+
+	# Get the cookies and see what we've got...
+	self.haveCookies = False
+	self.cookies = Cookie.SimpleCookie()
+	try:
+	    self.cookies.load(os.environ["HTTP_COOKIE"])
+	    self.haveCookies = True
+	    #print("Got cookies<br>")
+	except KeyError:
+	    #print("No cookies")
+	    pass # Should we do something here?
+
+
 
 
     def setPassPhrase(self,value):
@@ -73,6 +93,16 @@ class Authorize :
 
     def hmacSHA1(self,message) :
 	return(False)
+
+    def printCookieInformation(self):
+	# Print out any cookies we might have.
+	if(self.haveCookies):
+	    print("<p>We have cookies!</p>")
+	    num = 1
+	    for key,value in self.cookies.iteritems():
+		print("{0} - {1} - {2}<br>".format(num,key,value.value))
+		num = num + 1
+
 
 
 if (__name__ =='__main__') :
