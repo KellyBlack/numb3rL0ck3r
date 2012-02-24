@@ -34,6 +34,10 @@
 #
 #
 
+# Print out the http header. (Assumes everything that follows is
+# printable material!)
+print("Content-Type: text/html\n\n")
+
 
 #import cgi
 
@@ -47,22 +51,20 @@ from mako.lookup import TemplateLookup
 templateLookup = TemplateLookup(directories=['./'])
 
 
+# Get the configuration information 
+from config.Config import Config
+localConfig = Config()
+localConfig.parseConfigurationFile()
+
+
 # Get the local modules necessary for this site.
 from User.Authorize import Authorize
-from config.Config import Config
-
-# Print out the http header. (Assumes everything that follows is
-# printable material!)
-print("Content-Type: text/html\n\n")
 
 
 # Get the authorization information
-authorization = Authorize()
+authorization = Authorize(localConfig.getPassPhrase())
 #authorization.printCookieInformation()
 
-# Get any necessary local information
-localConfig = Config()
-localConfig.parseConfigurationFile()
 
 
 # get the template for the main page.

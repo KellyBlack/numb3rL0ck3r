@@ -47,12 +47,15 @@ import Cookie
 import os
 
 
+
 class Authorize :
 
     def __init__(self,passPhrase="",hash="") :
-	# Set the authentication parameters
+
+	# Set the passphrase and hash.
 	self.setPassPhrase(passPhrase)
 	self.setRemoteHash(hash)
+
 
 	# Get the cookies and see what we've got...
 	self.haveCookies = False
@@ -64,7 +67,6 @@ class Authorize :
 	except KeyError:
 	    #print("No cookies")
 	    pass # Should we do something here?
-
 
 
 

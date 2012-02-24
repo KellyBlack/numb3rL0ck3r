@@ -112,6 +112,10 @@ class Config(SafeConfigParser):
     def getConfigurationFile(self) :
 	return(self.configFileName)
 
+    # Get the security passphrase
+    def getPassPhrase(self):
+	return(self.securityOptions['passwordSecurityHash'])
+
     # Read the configuration file and parse the items in the file.
     def parseConfigurationFile(self) :
 
