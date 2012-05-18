@@ -44,10 +44,25 @@ import cgitb
 cgitb.enable()
 
 
+
+# Print out the http header. (Assumes everything that follows is
+# printable material if it is commented out!)
+#print("Content-Type: text/html\n\n")
+
+
+# Get the class to deal with user management
+from User.Authorize import Authorize
+authorization = Authorize()
+
+
 # Check to see if a user name and password form was submitted
 if(('userID' in formValues) and ('passwd' in formValues)):
     # for now just create a cookie.
-    pass
+    authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
+    authorization.printCookie()
+
+#else:
+#    authorization.printCookieInformation()
 
 
 # Print out the http header. (Assumes everything that follows is

@@ -105,7 +105,23 @@ class Authorize :
 		print("{0} - {1} - {2}<br>".format(num,key,value.value))
 		num = num + 1
 
+    def setUser(self,username,password):
+	# Routine to set the user name for this person
+	# TODO Need to properly set the cookie. For now just do something silly until we get the cookie thing working.
+	self.cookies['user'] = username
+	self.cookies['user']['path']    = '/'  # TODO change the path!
+	self.cookies['user']['domain']  = 'clarkson.edu' # TODO change the domain!
+	#self.cookies['user']['expires'] =
+	
 
+    def checkUser(self,username,password):
+	#routine to check to see if the user and password are correct
+	# TODO add a check to see if the hash matches.
+	self.setUser(username,password)
+	return(True)
+
+    def printCookie(self):
+	print(self.cookies.output())
 
 if (__name__ =='__main__') :
     auth = Authorize()
