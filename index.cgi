@@ -34,16 +34,26 @@
 #
 #
 
-# Print out the http header. (Assumes everything that follows is
-# printable material!)
-print("Content-Type: text/html\n\n")
 
 
-#import cgi
+import cgi
+formValues = cgi.FieldStorage()
 
 # Enable debugging - comment this out for production! *TODO*
 import cgitb
 cgitb.enable()
+
+
+# Check to see if a user name and password form was submitted
+if(('userID' in formValues) and ('passwd' in formValues)):
+    # for now just create a cookie.
+    pass
+
+
+# Print out the http header. (Assumes everything that follows is
+# printable material!)
+print("Content-Type: text/html\n\n")
+
 
 # Read in the necessary mako template classes
 from mako.template import Template
