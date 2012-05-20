@@ -35,15 +35,9 @@
 <%include file="sidebar.tmpl"/>
 <!-- ${templateDir} -->
 <div id="page_center">
-<div id="loginbox">
-<form action="./index.cgi" method="post" id="loginbox">
-<table>
-<tr><td>User ID: </td><td><input type="text" name="userID" id="userIDInput"></td></tr>
-<tr><td>Password:</td><td><input type="text" name="passwd" id="passwdInput"></td></tr>
-</table>
-<p><input type="submit" value="Submit"></p>
-<p><input type="reset"  value="Reset"></p>
-</div>
+
+<%include file="loginBox.tmpl"/>
+
 </div>
 <div id="class_list">
 <p>Need course information down the middle. </p>

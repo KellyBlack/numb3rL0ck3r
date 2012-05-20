@@ -1,0 +1,13 @@
+<div id="loginbox">
+% if loginBox:
+  <form action="./index.cgi" method="post" id="loginbox">
+  <table>
+  <tr><td>User ID: </td><td><input type="text" name="userID" id="userIDInput"></td></tr>
+  <tr><td>Password:</td><td><input type="text" name="passwd" id="passwdInput"></td></tr>
+  </table>
+  <p><input type="submit" value="Submit"></p>
+  <p><input type="reset"  value="Reset"></p>
+% else:
+  Welcome back ${username}.
+% endif
+</div>
