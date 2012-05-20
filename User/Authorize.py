@@ -108,6 +108,15 @@ class Authorize :
 		print("{0} - {1} - {2}<br>".format(num,key,value.value))
 		num = num + 1
 
+
+    def deleteCookies(self):
+	# Print out any cookies we might have.
+	if(self.haveCookies):
+	    #print("<p>We have cookies!</p>")
+	    for key,value in self.cookies.iteritems():
+                print('Set-Cookie:{0}=""; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'.format(key))
+
+
     def setUser(self,username,password):
 	# Routine to set the user name for this person
 	# TODO Need to properly set the cookie. For now just do something silly until we get the cookie thing working.

@@ -67,6 +67,7 @@ CREATE TABLE admin.Numb3rL0ck3r_administrativeRoles (
        administrativeRolesid bigint DEFAULT nextval('administrativeRolesid_seq'),
        administrativeRoleTitle text,
        administrativeRolesDescription text,
+       administrativeRolesPassPhrase text,
        PRIMARY KEY(administrativeRolesid)
 );
 
