@@ -51,6 +51,9 @@ import os
 class Authorize :
 
     def __init__(self,passPhrase="",hash="") :
+        # Assume not logged in
+        self.authorized = False
+        self.username = ""
 
 	# Set the passphrase and hash.
 	self.setPassPhrase(passPhrase)
@@ -108,6 +111,7 @@ class Authorize :
     def setUser(self,username,password):
 	# Routine to set the user name for this person
 	# TODO Need to properly set the cookie. For now just do something silly until we get the cookie thing working.
+        self.username = username
 	self.cookies['user'] = username
 	self.cookies['user']['path']    = '/'  # TODO change the path!
 	self.cookies['user']['domain']  = 'clarkson.edu' # TODO change the domain!
@@ -117,11 +121,18 @@ class Authorize :
     def checkUser(self,username,password):
 	#routine to check to see if the user and password are correct
 	# TODO add a check to see if the hash matches.
+        self.authorized = True
 	self.setUser(username,password)
 	return(True)
 
     def printCookie(self):
 	print(self.cookies.output())
+
+    def userAuthorized(self):
+        return(self.authorized)
+
+    def getUserName(self):
+        return(self.username)
 
 if (__name__ =='__main__') :
     auth = Authorize()

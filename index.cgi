@@ -41,7 +41,7 @@ formValues = cgi.FieldStorage()
 
 # Enable debugging - comment this out for production! *TODO*
 import cgitb
-cgitb.enable()
+#cgitb.enable()
 
 
 
@@ -89,7 +89,7 @@ from User.Authorize import Authorize
 # Get the authorization information
 authorization = Authorize(localConfig.getPassPhrase())
 #authorization.printCookieInformation()
-
+#print("Authorized: {0}".format(authorization.userAuthorized()))
 
 
 # get the template for the main page.
@@ -97,6 +97,8 @@ authorization = Authorize(localConfig.getPassPhrase())
 t = Template(filename='template/basePage.tmpl',lookup=templateLookup)
 
 print(t.render(templateDir="template",
+               loginBox=authorization.userAuthorized(),
+               username=authorization.getUserName(),
                **localConfig.getConfigurationDict()))
 
 
