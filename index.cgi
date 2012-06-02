@@ -41,13 +41,14 @@ formValues = cgi.FieldStorage()
 
 # Enable debugging - comment this out for production! *TODO*
 import cgitb
-#cgitb.enable()
+cgitb.enable()
+
 
 
 
 # Print out the http header. (Assumes everything that follows is
 # printable material if it is commented out!)
-#print("Content-Type: text/html\n\n")
+# print("Content-Type: text/html\n\n")
 
 
 # Get the class to deal with user management
@@ -59,10 +60,7 @@ authorization = Authorize()
 if(('userID' in formValues) and ('passwd' in formValues)):
     # for now just create a cookie.
     authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
-    authorization.printCookie()
 
-#else:
-#    authorization.printCookieInformation()
 
 
 # Print out the http header. (Assumes everything that follows is
