@@ -70,6 +70,12 @@ class Config(SafeConfigParser):
 		'homeInstitutionDescription' : ''
 		}
 
+	self.diskOptions = \
+		{
+		 'templateDir' : '/tmp/templates',
+	         'homeDir'     : '/www'
+	        }
+
 	self.databaseOptions = \
 		{'regularDataBaseUser'         : '',
                  'regularDataBaseUserPassword' : '',
@@ -103,6 +109,9 @@ class Config(SafeConfigParser):
     def getSecurityConfigurationDict(self) :
 	return(self.securityOptions)
 
+    # Return a pointer to the disk configuration file
+    def getDiskConfigurationDict(self):
+	return(self.diskOptions)
 
     # set the configuration file name
     def setConfigurationFile(self,name) :
@@ -142,10 +151,15 @@ class Config(SafeConfigParser):
 	correctFile = correctFile and self.getSectionInformation(
 	    'site',self.siteConfigurationOptions)
 
+	# Get the information from the "disk" sect
+	correctFile = correctFile and self.getSectionInformation(
+	    'disk',self.diskOptions)
+
 	# Get the information from the "database" section.
 	correctFile = correctFile and self.getSectionInformation(
 	    'database',self.databaseOptions)
 
+	# Get the information from the "security" section
 	correctFile = correctFile and self.getSectionInformation(
 	    'security',self.securityOptions)
 
@@ -188,6 +202,7 @@ if (__name__ =='__main__') :
     if(conf.parseConfigurationFile()) :
 	print(conf.siteConfigurationOptions)
 	print(conf.databaseOptions)
+	print(conf.diskOptions)
 
     else:
 	print("There was an error")

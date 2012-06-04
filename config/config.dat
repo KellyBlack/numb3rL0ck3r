@@ -10,7 +10,7 @@
 ;
 
 [site]
-; variables associated with the directory structure
+; variables associated with the directory structure of the webpages. (THese are for URLs)
 documentDir = /numb3rL0ck3r/     ; Note that it ends with the "/"
 cgiDir      = /cgi-bin/          ; Note that it ends with the "/"
 cssDir      = /numb3rL0ck3r/css/ ; Note that it ends with the "/"
@@ -22,6 +22,11 @@ administratorEmail         = admin@www.numb3rl0ck3r.org
 homeInstitutionName        = Clarkson University
 homeInstitutionDescription = The best darn school in Potsdam NY (at the 95%% conf. level)
 
+
+[disk]
+; variables associated with the layout of the files used to server the web pages
+templateDir = /home/black/public_html/cgi-bin/numb3rL0ck3r/template/   ; ends in "/" where the templates are located
+homeDir     = /home/black/public_html/cgi-bin/numb3rL0ck3r/            ; ends in "/" the top directory where the python files reside.
 
 
 [database]
