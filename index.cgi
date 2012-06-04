@@ -51,10 +51,6 @@ cgitb.enable()
 # Get the class to deal with user management
 from User.Authorize import Authorize
 authorization = Authorize()
-# Get the authorization information
-authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
 
 
 # Check to see if a user name and password form was submitted
@@ -69,10 +65,15 @@ from config.Config import Config
 localConfig = Config()
 localConfig.parseConfigurationFile()
 
+# Get the authorization information
+authorization = Authorize(localConfig.getPassPhrase())
+#authorization.printCookieInformation()
+#print("Authorized: {0}".format(authorization.userAuthorized()))
 
-# get the control to print the page
-from Control.BasePage import BaseControl
-mainControl = BaseControl('template/basePage.tmpl')
+
+# get the producer to print the page
+from Producer.BaseProducer import BaseProducer
+mainControl = BaseProducer('template/basePage.tmpl')
 mainControl.renderPage(loginBox=authorization.userAuthorized(),
 		       username=authorization.getUserName(),
 		       **localConfig.getConfigurationDict())

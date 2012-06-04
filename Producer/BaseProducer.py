@@ -39,7 +39,7 @@ from mako.lookup import TemplateLookup
 
 
 
-class BaseControl:
+class BaseProducer:
 
     def __init__(self,templateName=''):
 	self.setTemplateName(templateName)
