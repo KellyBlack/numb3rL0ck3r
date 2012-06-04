@@ -46,14 +46,15 @@ cgitb.enable()
 
 
 
-# Print out the http header. (Assumes everything that follows is
-# printable material if it is commented out!)
-# print("Content-Type: text/html\n\n")
 
 
 # Get the class to deal with user management
 from User.Authorize import Authorize
 authorization = Authorize()
+# Get the authorization information
+authorization = Authorize(localConfig.getPassPhrase())
+#authorization.printCookieInformation()
+#print("Authorized: {0}".format(authorization.userAuthorized()))
 
 
 # Check to see if a user name and password form was submitted
@@ -63,41 +64,18 @@ if(('userID' in formValues) and ('passwd' in formValues)):
 
 
 
-# Print out the http header. (Assumes everything that follows is
-# printable material!)
-print("Content-Type: text/html\n\n")
-
-
-# Read in the necessary mako template classes
-from mako.template import Template
-from mako.lookup import TemplateLookup
-templateLookup = TemplateLookup(directories=['./'])
-
-
 # Get the configuration information 
 from config.Config import Config
 localConfig = Config()
 localConfig.parseConfigurationFile()
 
 
-# Get the local modules necessary for this site.
-from User.Authorize import Authorize
-
-
-# Get the authorization information
-authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
-
-
-# get the template for the main page.
-
-t = Template(filename='template/basePage.tmpl',lookup=templateLookup)
-
-print(t.render(templateDir="template",
-               loginBox=authorization.userAuthorized(),
-               username=authorization.getUserName(),
-               **localConfig.getConfigurationDict()))
+# get the control to print the page
+from Control.BasePage import BaseControl
+mainControl = BaseControl('template/basePage.tmpl')
+mainControl.renderPage(loginBox=authorization.userAuthorized(),
+		       username=authorization.getUserName(),
+		       **localConfig.getConfigurationDict())
 
 
 # Print out all the environment info
