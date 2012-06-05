@@ -73,7 +73,7 @@ authorization = Authorize(localConfig.getPassPhrase())
 
 # get the controler to print the page
 from Controller.BaseController import BaseController
-mainControl = BaseController('template/basePage.tmpl')
+mainControl = BaseController('basePage.tmpl',localConfig.diskOptions['templateDir'])
 mainControl.renderPage(loginBox=authorization.userAuthorized(),
 		       username=authorization.getUserName(),
 		       **localConfig.getConfigurationDict())
