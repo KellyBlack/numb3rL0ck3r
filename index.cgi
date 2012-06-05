@@ -71,9 +71,9 @@ authorization = Authorize(localConfig.getPassPhrase())
 #print("Authorized: {0}".format(authorization.userAuthorized()))
 
 
-# get the producer to print the page
-from Producer.BaseProducer import BaseProducer
-mainControl = BaseProducer('template/basePage.tmpl')
+# get the controler to print the page
+from Controller.BaseController import BaseController
+mainControl = BaseController('template/basePage.tmpl')
 mainControl.renderPage(loginBox=authorization.userAuthorized(),
 		       username=authorization.getUserName(),
 		       **localConfig.getConfigurationDict())
