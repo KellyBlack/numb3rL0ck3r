@@ -59,3 +59,32 @@ class BaseController:
 	print("Content-Type: text/html\n\n")
 	print(t.render(templateDir="template",**options))
 
+
+
+
+class ClassController(BaseController):
+
+    def __init__(self,templateName='',templateDir='./'):
+	super.__init__(templateName,templateDir)
+
+
+
+
+if (__name__ =='__main__') :
+    import sys
+    import os
+    sys.path.append( os.path.join( os.getcwd(), '..' ) )
+
+    #local classes for Numb3r L0ck3r
+    from config.Config import Config
+    localConfig = Config('../')
+    localConfig.parseConfigurationFile()
+
+    # get the controler to print the page
+    from Controller.BaseController import BaseController
+    #print(localConfig.diskOptions['templateDir'])
+    mainControl = BaseController('basePage.tmpl',localConfig.diskOptions['templateDir'])
+    mainControl.renderPage(loginBox = '',
+			   username='',
+			   **localConfig.getConfigurationDict())
+
