@@ -65,7 +65,19 @@ class BaseController:
 class ClassController(BaseController):
 
     def __init__(self,templateName='',templateDir='./'):
-	super.__init__(templateName,templateDir)
+	BaseController.__init__(self,templateName,templateDir)
+
+
+class LabController(BaseController):
+
+    def __init__(self,templateName='',templateDir='./'):
+	BaseController.__init__(self,templateName,templateDir)
+
+
+class LabResultsController(BaseController):
+
+    def __init__(self,templateName='',templateDir='./'):
+	BaseController.__init__(self,templateName,templateDir)
 
 
 
@@ -81,9 +93,9 @@ if (__name__ =='__main__') :
     localConfig.parseConfigurationFile()
 
     # get the controler to print the page
-    from Controller.BaseController import BaseController
+    from Controller.BaseController import LabResultsController
     #print(localConfig.diskOptions['templateDir'])
-    mainControl = BaseController('basePage.tmpl',localConfig.diskOptions['templateDir'])
+    mainControl = LabResultsController('basePage.tmpl',localConfig.diskOptions['templateDir'])
     mainControl.renderPage(loginBox = '',
 			   username='',
 			   **localConfig.getConfigurationDict())
