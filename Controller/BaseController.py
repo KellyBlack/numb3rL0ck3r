@@ -41,13 +41,17 @@ from mako.lookup import TemplateLookup
 
 class BaseController:
 
-    def __init__(self,templateName='',templateDir='./'):
+    def __init__(self,userid,templateName='',templateDir='./'):
 	self.templateLookup = TemplateLookup(directories=[templateDir,"template"])
 	self.setTemplateName(templateName)
+	self.setUserID(userid)
 
     def setTemplateName(self,theName):
 	self.templateName = theName
 
+
+    def setUserID(self,userid):
+	self.userID = userid
 
 
     def renderPage(self,**options) :
@@ -60,24 +64,45 @@ class BaseController:
 	print(t.render(templateDir="template",**options))
 
 
+    def sideBar(self,loggedIn=False):
+	if(loggedIn):
+	    return("<%include file=\"loginBox.tmpl\"/>")
+	else:
+	    return("")
+	    
+    def mainContent(self,**options):
+	t  = self.templateLookup.get_template('frontPageIntroduction.tmpl')
+	return(t.render(templateDir="template".options))
 
 
 class ClassController(BaseController):
 
-    def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+    def __init__(self,userid,templateName='',templateDir='./'):
+	BaseController.__init__(self,userid,templateName,templateDir)
+
+    def mainContent(self,**options):
+	t  = self.templateLookup.get_template('classPageOverview.tmpl')
+	return(t.render(templateDir="template".options))
 
 
 class LabController(BaseController):
 
-    def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+    def __init__(self,userid,templateName='',templateDir='./'):
+	BaseController.__init__(self,userid,templateName,templateDir)
+
+    def mainContent(self,**options):
+	t  = self.templateLookup.get_template('labPageOverview.tmpl')
+	return(t.render(templateDir="template".options))
 
 
 class LabResultsController(BaseController):
 
-    def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+    def __init__(self,userid,templateName='',templateDir='./'):
+	BaseController.__init__(self,userid,templateName,templateDir)
+
+    def mainContent(self,**options):
+	t  = self.templateLookup.get_template('laboratoryData.tmpl')
+	return(t.render(templateDir="template".options))
 
 
 
