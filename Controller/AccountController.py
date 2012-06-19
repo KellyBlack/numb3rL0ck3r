@@ -42,25 +42,25 @@ from BaseController import BaseController
 
 class LoginController(BaseController):
 
-    def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+    def __init__(self,templateName='loginPage.tmpl',templateDir='./'):
+	BaseController.__init__(self,0,templateName,templateDir)
 
 
 class AccountInformation(BaseController):
 
-    def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+    def __init__(self,templateName='accountInformation.tmpl',templateDir='./'):
+	BaseController.__init__(self,0,templateName,templateDir)
 
 class ResetPassword(BaseController):
 
     def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+	BaseController.__init__(self,0,templateName,templateDir)
 
 
 class CreateAccount(BaseController):
 
     def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+	BaseController.__init__(self,0,templateName,templateDir)
 
 
 
@@ -75,8 +75,11 @@ if (__name__ =='__main__') :
     localConfig.parseConfigurationFile()
 
     # get the controler to print the page
-    from Controller.AccountController import LoginController
-    mainControl = LoginController('basePage.tmpl',localConfig.diskOptions['templateDir'])
+    from Controller.AccountController import LoginController, AccountInformation, ResetPassword, CreateAccount
+    #mainControl = LoginController('loginPage.tmpl',localConfig.diskOptions['templateDir'])
+    #mainControl = AccountInformation('accountInformation.tmpl',localConfig.diskOptions['templateDir'])
+    #mainControl = ResetPassword('resetPassword.tmpl',localConfig.diskOptions['templateDir'])
+    mainControl = CreateAccount('createAccount.tmpl',localConfig.diskOptions['templateDir'])
     mainControl.renderPage(loginBox = '',
 			   username='',
 			   **localConfig.getConfigurationDict())

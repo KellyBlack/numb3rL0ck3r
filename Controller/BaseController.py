@@ -120,7 +120,7 @@ if (__name__ =='__main__') :
     # get the controler to print the page
     from Controller.BaseController import LabResultsController
     #print(localConfig.diskOptions['templateDir'])
-    mainControl = LabResultsController('basePage.tmpl',localConfig.diskOptions['templateDir'])
+    mainControl = LabResultsController(0,'basePage.tmpl',localConfig.diskOptions['templateDir'])
     mainControl.renderPage(loginBox = '',
 			   username='',
 			   **localConfig.getConfigurationDict())

@@ -43,25 +43,25 @@ from BaseController import BaseController
 class BaseAdminController(BaseController):
 
     def __init__(self,templateName='',templateDir='./'):
-	BaseController.__init__(self,templateName,templateDir)
+	BaseController.__init__(self,0,templateName,templateDir)
 
 
 class LabAdminController(BaseAdminController):
 
     def __init__(self,templateName='',templateDir='./'):
-	BaseAdminController.__init__(self,templateName,templateDir)
+	BaseAdminController.__init__(self,0,templateName,templateDir)
 
 
 class ClassAdminController(BaseAdminController):
 
     def __init__(self,templateName='',templateDir='./'):
-	BaseAdminController.__init__(self,templateName,templateDir)
+	BaseAdminController.__init__(self,0,templateName,templateDir)
 
 
 class SiteAdminController(BaseAdminController):
 
     def __init__(self,templateName='',templateDir='./'):
-	BaseAdminController.__init__(self,templateName,templateDir)
+	BaseAdminController.__init__(self,0,templateName,templateDir)
 
 
 
