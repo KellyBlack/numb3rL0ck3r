@@ -24,6 +24,7 @@
     <task id="2" name="Have index.cgi update login box depending on user stauts" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work"/>
     <task id="3" name="Access databse" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work"/>
     <task id="4" name="login.cgi for logging into any page" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work"/>
+    <task id="5" name="Add an en_US directory and move templates below it." note="" work="28800" start="20120224T000000Z" end="20120224T170000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
   </tasks>
   <resource-groups/>
   <resources/>
