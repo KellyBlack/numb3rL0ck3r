@@ -52,21 +52,13 @@ authorization = Authorize()
 
 
 # Check to see if a user name and password form was submitted
-badUser = False
-if(('userID' in formValues) and ('passwd' in formValues)):
+if(('userID' in formValues) and ('password' in formValues)):
     # TODO - verify the password
-    if(authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)):
-	# TODO - set cookie
-	#authorization.printCookieInformation()
-        #print("Authorized: {0}".format(authorization.userAuthorized()))
-	print("Location: ../index.cgi\n\n")
-
-
-    else:
-	# The password and username did not match.
-	# Need to print an error message
-	badUser = True
-
+    # TODO - send an email
+    # TODo - check for duplicate user names
+    # TODO - save the information
+    pass
+    
 # Get the configuration information 
 from config.Config import Config
 localConfig = Config('../')
