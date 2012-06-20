@@ -2,7 +2,7 @@
 
 #
 #
-# Copyright (c) 2012, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2011-2012, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,23 +33,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #
-
 import sys
 import os
 sys.path.append( os.path.join( os.getcwd(), '..' ) )
-
-
 
 import cgi
 formValues = cgi.FieldStorage()
 
 # Enable debugging - comment this out for production! *TODO*
-#import cgitb
-#cgitb.enable()
-
-
-
-
+import cgitb
+cgitb.enable()
 
 
 # Get the class to deal with user management
@@ -57,12 +50,22 @@ from User.Authorize import Authorize
 authorization = Authorize()
 
 
+
 # Check to see if a user name and password form was submitted
+badUser = False
 if(('userID' in formValues) and ('passwd' in formValues)):
-    # for now just create a cookie.
-    authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
+    # TODO - verify the password
+    if(authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)):
+	# TODO - set cookie
+	#authorization.printCookieInformation()
+        #print("Authorized: {0}".format(authorization.userAuthorized()))
+	print("Location: ../index.cgi\n\n")
 
 
+    else:
+	# The password and username did not match.
+	# Need to print an error message
+	badUser = True
 
 # Get the configuration information 
 from config.Config import Config
@@ -71,20 +74,11 @@ localConfig.parseConfigurationFile()
 
 # Get the authorization information
 authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
 
 
 # get the controler to print the page
-from Controller.BaseController import BaseController
-mainControl = BaseController('newUser.tmpl',localConfig.diskOptions['templateDir'])
-mainControl.renderPage(loginBox=authorization.userAuthorized(),
-		       username=authorization.getUserName(),
-		       **localConfig.getConfigurationDict())
+from Controller.AccountController import LoginController
+mainControl = LoginController('createAccount.tmpl',localConfig.diskOptions['templateDir'])
+mainControl.renderPage(**localConfig.getConfigurationDict())
 
-
-# Print out all the environment info
-#print("<p>hello</p>")
-#for key,value in os.environ.iteritems():
-#    print("{0} - {1}<br>".format(key,value))
 
