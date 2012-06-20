@@ -37,25 +37,51 @@ import sys
 import os
 sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
+import cgi
+formValues = cgi.FieldStorage()
 
-# Make template classes
-from mako.template import Template
-from mako.lookup import TemplateLookup
-templateLookup = TemplateLookup(directories=['./'])
+# Enable debugging - comment this out for production! *TODO*
+import cgitb
+cgitb.enable()
 
 
-#local classes for Numb3r L0ck3r
+# Get the class to deal with user management
+from User.Authorize import Authorize
+authorization = Authorize()
+
+
+
+# Check to see if a user name and password form was submitted
+badUser = False
+if(('userID' in formValues) and ('passwd' in formValues)):
+    # TODO - verify the password
+    if(authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)):
+	# TODO - set cookie
+	#authorization.printCookieInformation()
+        #print("Authorized: {0}".format(authorization.userAuthorized()))
+	print("Location: ../index.cgi\n\n")
+
+
+    else:
+	# The password and username did not match.
+	# Need to print an error message
+	badUser = True
+
+# Get the configuration information 
 from config.Config import Config
-
-
-localConfig = Config()
+localConfig = Config('../')
 localConfig.parseConfigurationFile()
 
-t = Template(filename='template/loginAttempt.tmpl',lookup=templateLookup)
+# Get the authorization information
+authorization = Authorize(localConfig.getPassPhrase())
 
-#print(page)
-print(t.render(templateDir="template",
-	       usernameError=True,
-	       passwordError=False,
-	       **localConfig.getConfigurationDict()))
+
+# get the controler to print the page
+from Controller.AccountController import LoginController
+mainControl = LoginController('loginPage.tmpl',localConfig.diskOptions['templateDir'])
+mainControl.renderPage(loginBox=True,
+		       badPassword = badUser,
+                       username=authorization.getUserName(),
+                       **localConfig.getConfigurationDict())
+
 
