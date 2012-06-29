@@ -169,10 +169,16 @@ class Authorize :
 	print(self.cookies.output())
 
     def userAuthorized(self):
+	# TODO - fix this
         return(self.authorized)
 
     def getUserName(self):
+	# TODO - fix this
         return(self.username)
+
+    def checkUserNameExists(self,username):
+	# TODO - fix this
+	return(False)
 
 if (__name__ =='__main__') :
     auth = Authorize()
