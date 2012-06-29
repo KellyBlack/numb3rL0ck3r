@@ -27,22 +27,9 @@
  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. *#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-</%doc><html>
-<!-- start template/basePage.tmp -->
-<%include file="preamble.tmpl"/>
-<body>
-<%include file="header.tmpl"/>
-<!-- ${templateDir} -->
-<div id="page_center">
-<%include file="sidebar.tmpl"/>
-<%include file="loginBox.tmpl"/>
+</%doc>
+<%inherit file="basePage.tmpl"/>
 
-</div>
-<div id="content">
-<p>Need to have a new user form here. </p>
-</div>
-</div>
-<%include file="footer.tmpl"/>
-</body>
-<!-- end template/basePage.tmp -->
-</html>
+<%block name="mainContent">
+<p>Your account has been created. You must now confirm your email address. An email has been sent to  ${email} with a link. Please click on the link to confirm your account. If you cannot find the email please check your spam folder.</p>
+</%block>

@@ -31,13 +31,13 @@
 <%inherit file="basePage.tmpl"/>
 
 <%block name="mainContent">
-<form>
-<p>Please enter your email address and an initial password:</p>
+<form action="./newuser.cgi" method="POST" id="newUserForm">
+<p>Your email address will be used as your user name. Please enter your email address and an initial password:</p>
 <table>
-<tr><td>Email address:       </td><td></td></tr>
-<tr><td>Confirm new address: </td><td></td></tr>
-<tr><td>Password:            </td><td></td></tr>
-<tr><td>Confirm password:    </td><td></td></tr>
+<tr><td>Email address:       </td><td><input type="text" name="email" id="email_input" value="${email}"></td></tr>
+<tr><td>Confirm new address: </td><td><input type="text" name="email_confirm" id="email_confirm_input" value="${email_confirm}"></td></tr>
+<tr><td>Password:            </td><td><input type="password" name="password" id="password" value="${password}"></td></tr>
+<tr><td>Confirm password:    </td><td><input type="pasword" name="password_confirm" id="password_confirm" value="${password_confirm}"></td></tr>
 </table>
 </form>
 </%block>

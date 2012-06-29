@@ -49,17 +49,7 @@ cgitb.enable()
 from User.Authorize import Authorize
 authorization = Authorize()
 
-
-
-# Check to see if a user name and password form was submitted
-if(('userID' in formValues) and ('password' in formValues)):
-    # TODO - verify the password
-    # TODO - send an email
-    # TODo - check for duplicate user names
-    # TODO - save the information
-    pass
-    
-# Get the configuration information 
+# Get the configuration information
 from config.Config import Config
 localConfig = Config('../')
 localConfig.parseConfigurationFile()
@@ -67,10 +57,60 @@ localConfig.parseConfigurationFile()
 # Get the authorization information
 authorization = Authorize(localConfig.getPassPhrase())
 
+from Controller.AccountController import LoginController
+email=""
+email_confirm=""
+password=""
+password_confirm=""
+emailMatches = True
+passwordMatches = True
+userExists = False
+mainControl = None
+
+# First - ask if this is about creating a new user.
+if(('email' in formValues) and ('email_confirm' in formValues) and \
+   ('password' in formValues) and ('password_confirm' in formValues)):
+    # This is a request to create a new account.
+
+    emailMatches = (formValues['email'] != formValues['email_confirm'])
+    passwordMatches = (formValues['password'] != formValues['password_confirm'])
+
+    if(emailMatches and passwordMatches):
+	# The information is good.
+
+	if(authorization.checkUserNameExists(formValues['password'])):
+	   # This user exists. Need to print an error message.
+	   userExists = True
+
+	else:
+	    # Everything checks and add it to the database.
+	    formValues['password'] = authorization.getHash(formValues['password'])
+	    # TODO - send an email
+	    # TODO - save the information
+	    mainControl = LoginController('newUser.tmpl',localConfig.diskOptions['templateDir'])
+
+    else:
+	# get the controler to print the page
+	email=formValues['email']
+	email_confirm=formValues['email_confirm']
+
+
+    
 
 # get the controler to print the page
 from Controller.AccountController import LoginController
-mainControl = LoginController('createAccount.tmpl',localConfig.diskOptions['templateDir'])
-mainControl.renderPage(**localConfig.getConfigurationDict())
+if(not mainControl):
+    mainControl = LoginController('createAccount.tmpl',localConfig.diskOptions['templateDir'])
+mainControl.renderPage(email=email,
+		       email_confirm=email_confirm,
+		       password=password,
+		       password_confirm=password_confirm,
+		       emailMatches = emailMatches,
+		       passwordMatches = passwordMatches,
+		       userExists=userExists,
+		       **localConfig.getConfigurationDict()
+		       )
+
+
 
 
