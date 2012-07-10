@@ -86,6 +86,15 @@ class Config(SafeConfigParser):
                  'databasePort'                : ''
 		}
 
+	self.mailOptions = \
+		{'mailHost'           : '',
+                 'mailPort'           : '',
+		 'mailUserName'       : '',
+		 'mailPassword'       : '',
+                 'mailFromAddress'    : '',
+		 'mailSubjectLine'    : '',
+		}
+
 	self.securityOptions = \
 		{'administratorPassword' : '',
 		 'passwordSecurityHash'  : ''
@@ -105,6 +114,10 @@ class Config(SafeConfigParser):
     def getDatabaseConfigurationDict(self) :
 	return(self.databaseOptions)
 
+    # Return a pointer to the mail configuration file
+    def getMailConfigurationDict(self) :
+	return(self.mailOptions)
+    
     # Return a pointer to the security configuration file
     def getSecurityConfigurationDict(self) :
 	return(self.securityOptions)
@@ -159,6 +172,10 @@ class Config(SafeConfigParser):
 	correctFile = correctFile and self.getSectionInformation(
 	    'database',self.databaseOptions)
 
+	# Get the information from the "mail" section.
+	correctFile = correctFile and self.getSectionInformation(
+	    'mail',self.mailOptions)
+	
 	# Get the information from the "security" section
 	correctFile = correctFile and self.getSectionInformation(
 	    'security',self.securityOptions)
@@ -202,6 +219,7 @@ if (__name__ =='__main__') :
     if(conf.parseConfigurationFile()) :
 	print(conf.siteConfigurationOptions)
 	print(conf.databaseOptions)
+	print(conf.mailOptions)
 	print(conf.diskOptions)
 
     else:

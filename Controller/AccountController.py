@@ -62,6 +62,17 @@ class CreateAccount(BaseController):
     def __init__(self,templateName='',templateDir='./'):
 	BaseController.__init__(self,0,templateName,templateDir)
 
+class EmailController(BaseController):
+
+    def __init__(self,templateName='emailNewAccount.tmpl',templateDir='./'):
+	BaseController.__init__(self,0,templateName,templateDir)
+
+    def renderPage(self,**options) :
+	# Read in the necessary mako template classes
+	# Return the text of the template.
+	t = self.templateLookup.get_template(self.templateName)
+	return(t.render(templateDir="template",**options))
+
 
 
 if (__name__ =='__main__') :

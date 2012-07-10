@@ -33,6 +33,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #
+
+# Import the necessary parts for sending mail.
+import smtplib
+import email
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
+import mimetypes
+
 import sys
 import os
 sys.path.append( os.path.join( os.getcwd(), '..' ) )
@@ -42,7 +52,7 @@ formValues = cgi.FieldStorage()
 
 # Enable debugging - comment this out for production! *TODO*
 import cgitb
-cgitb.enable()
+#cgitb.enable()
 
 
 # Get the class to deal with user management
@@ -57,7 +67,7 @@ localConfig.parseConfigurationFile()
 # Get the authorization information
 authorization = Authorize(localConfig.getPassPhrase())
 
-from Controller.AccountController import LoginController
+from Controller.AccountController import LoginController,EmailController
 email=""
 email_confirm=""
 password=""
@@ -67,13 +77,18 @@ passwordMatches = True
 userExists = False
 mainControl = None
 
+# This is only for testing - delete it! *TODO*
+#formValues = {'email':'kjblack@gmail.com',
+#	      'email_confirm':'kjblack@gmail.com',
+#	      'password':'bubba',
+#	      'password_confirm':'bubba'}
 # First - ask if this is about creating a new user.
 if(('email' in formValues) and ('email_confirm' in formValues) and \
    ('password' in formValues) and ('password_confirm' in formValues)):
     # This is a request to create a new account.
 
-    emailMatches = (formValues['email'] != formValues['email_confirm'])
-    passwordMatches = (formValues['password'] != formValues['password_confirm'])
+    emailMatches = (formValues['email'] == formValues['email_confirm'])
+    passwordMatches = (formValues['password'] == formValues['password_confirm'])
 
     if(emailMatches and passwordMatches):
 	# The information is good.
@@ -85,7 +100,29 @@ if(('email' in formValues) and ('email_confirm' in formValues) and \
 	else:
 	    # Everything checks and add it to the database.
 	    formValues['password'] = authorization.getHash(formValues['password'])
-	    # TODO - send an email
+	    emailDetails = localConfig.getMailConfigurationDict()	    
+	    emailControl = EmailController('emailNewAccount.tmpl',localConfig.diskOptions['templateDir'])
+
+	    # Set up the email
+	    msg = MIMEMultipart()
+	    msg['Subject'] = emailDetails['mailSubjectLine']
+	    msg['From'] = emailDetails['mailFromAddress']
+	    msg['To'] = formValues['email']
+	    emailControl.renderPage()
+
+	    # Create the text for the page
+	    theMessage = emailControl.renderPage(email=formValues['email'],
+						 password=formValues['password'],
+						 **localConfig.getConfigurationDict())
+	    msg.preamble = theMessage
+	    theMessage   = MIMEText(theMessage,'plain')
+	    msg.attach(theMessage)
+
+	    # Now send it off
+	    smtp = smtplib.SMTP(emailDetails['mailHost'],emailDetails['mailPort'])
+	    smtp.login(emailDetails['mailUserName'],emailDetails['mailPassword'])
+	    smtp.sendmail(emailDetails['mailFromAddress'],formValues['email'],msg.as_string())
+	    
 	    # TODO - save the information
 	    mainControl = LoginController('newUser.tmpl',localConfig.diskOptions['templateDir'])
 

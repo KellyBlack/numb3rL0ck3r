@@ -48,6 +48,19 @@ databaseName = numb3rL0ck3r   ; name of the database to connect to
 databaseHost = localhost      ; hostname where the database resides
 databasePort = 5432           ; port number to use for the connection
 
+[mail]
+; variables associates with sending mail. The mail routines are
+; used to send out notices including the message for the initial 
+; sign on  when someone first registers.
+
+mailHost        = mymail.clarkson.edu
+mailPort        = 587
+mailUserName    = kblack
+mailPassword    = gooberish
+mailFromAddress = kblack@clarkson.edu
+mailSubjectLine = Welcome to the Numb3r L0ck3r Website
+
+
 
 [security]
 ; variables associated with various security parameters. Some of these
