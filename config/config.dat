@@ -17,6 +17,7 @@ cssDir      = /numb3rL0ck3r/css/ ; Note that it ends with the "/"
 
 
 ; Information local to the site
+serverName                 = black.sc.clarkson.edu
 administratorName          = Kelly Black
 administratorEmail         = admin@www.numb3rl0ck3r.org
 homeInstitutionName        = Clarkson University

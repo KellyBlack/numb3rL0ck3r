@@ -64,6 +64,7 @@ class Config(SafeConfigParser):
 	       {'documentDir'        : '/',
 		'cgiDir'             : '/cgi-bin',
 		'cssDir'             : '/css',
+		'serverName'         : '',
 		'administratorName'  : '',
 		'administratorEmail' : '',
 		'homeInstitutionName'        : '',
