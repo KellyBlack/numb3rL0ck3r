@@ -11,9 +11,9 @@
 
 [site]
 ; variables associated with the directory structure of the webpages. (THese are for URLs)
-documentDir = /numb3rL0ck3r/     ; Note that it ends with the "/"
-cgiDir      = /cgi-bin/          ; Note that it ends with the "/"
-cssDir      = /numb3rL0ck3r/css/ ; Note that it ends with the "/"
+documentDir = /~black/cgi-bin/numb3rL0ck3r/     ; Note that it ends with the "/"
+cgiDir      = /~black/cgi-bin/numb3rL0ck3r/     ; Note that it ends with the "/"
+cssDir      = /~black/cgi-bin/numb3rL0ck3r/CSS/ ; Note that it ends with the "/"
 
 
 ; Information local to the site
