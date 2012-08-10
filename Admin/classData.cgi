@@ -64,7 +64,7 @@ mainControl = None    # Default controller
 
 # get the controler to print the page
 if(not mainControl):
-    mainControl = BaseAdminController('Admin/baseAdmin.tmpl',
+    mainControl = BaseAdminController('Admin/classData.tmpl',
 				      localConfig.diskOptions['templateDir'])
 mainControl.renderPage(**localConfig.getConfigurationDict())
 
