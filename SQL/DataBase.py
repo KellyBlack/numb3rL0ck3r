@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #
 #
-# Copyright (c) 2011, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2015, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -51,149 +51,150 @@ class DataBase :
     checkSemiColon = re.compile(r";[ \t]*$") # Identify that there is a trailing semi-colon
 
     def __init__(self,password="",database="",host="",user="") :
-	self.setPassword(password)
-	self.setDatabaseName(database)
-	self.setHost(host)
-	self.setUser(user)
+	    self.setPassword(password)
+	    self.setDatabaseName(database)
+	    self.setHost(host)
+	    self.setUser(user)
 
 
     def setPassword(self,value):
-	self.password = value
+	    self.password = value
 
     def getPassword(self):
-	return(self.password)
+	    return(self.password)
 
 
     def setDatabaseName(self,dbName) :
-	self.databaseName = dbName
+	    self.databaseName = dbName
 
     def getDatabaseName(self) :
-	return(self.databaseName)
+	    return(self.databaseName)
 
 
     def setHost(self,host) :
-	self.hostName = host
+	    self.hostName = host
 
     def getHost(self) :
-	return(self.hostName)
+	    return(self.hostName)
 
 
     def setUser(self,user):
-	self.userName = user
+	    self.userName = user
 
     def getUser(self):
-	return(self.userName)
+	    return(self.userName)
 
     
 
     def connect(self) :
-	self.db = psycopg2.connect(user=self.getUser(),
+	    self.db = psycopg2.connect(user=self.getUser(),
                                    password=self.getPassword(),
                                    host=self.getHost(),
                                    database=self.getDatabaseName()) # dsn=None
 
     def close(self) :
-	self.db.close()
+	    self.db.close()
 
 
     def commit(self) :
-	self.db.commit()
+	    self.db.commit()
 
 
     def escapeDictionary(self,theDict) :
-	for key, value in theDict.iteritems():
-	    theDict[key] = psycopg2.extensions.adapt(value)
+	    for key, value in theDict.iteritems():
+	        theDict[key] = psycopg2.extensions.adapt(value)
 
 
     def escapeList(self,theList) :
-	lupe = 0
-	for entry in theList:
-	    theList[lupe] = psycopg2.extensions.adapt(entry)
-	    lupe += 1
+	    lupe = 0
+	    for entry in theList:
+	        theList[lupe] = psycopg2.extensions.adapt(entry)
+	        lupe += 1
 
 
     def escapeItems(self,theItems) :
 	
-	if(type(theItems)==str):
-	    return(psycopg2.extensions.adapt(theItems))
+	    if(type(theItems)==str):
+	        return(psycopg2.extensions.adapt(theItems))
 	
-	elif(type(theItems) == dict) :
-	    self.escapeDictionary(theItems)
+	    elif(type(theItems) == dict) :
+	        self.escapeDictionary(theItems)
 
-	elif(type(theItems)==list):
-	    self.escapeList(theItems)
+	    elif(type(theItems)==list):
+	        self.escapeList(theItems)
 
-	else :
-	    return(psycopg2.extensions.adapt(str(theItems)))
+	    else :
+	        return(psycopg2.extensions.adapt(str(theItems)))
 
-	return(None)
+	    return(None)
 
 
     def valuesFromDictionary(self,theDict) :
-	to = ""
-	values = ""
-	for key,value in theDict.iteritems():
-	    to += "," + key
-	    values += ",'" + psycopg2.extensions.adapt(value) + "'"
+	    to = ""
+	    values = ""
+	    for key,value in theDict.items():
+	        to += "," + key
+	        values += ",'{0}'".format(psycopg2.extensions.adapt(value))
 
-	return(self.leadingComma.sub('',to),self.leadingComma.sub('',values))
+	    return(self.leadingComma.sub('',to),self.leadingComma.sub('',values))
 
 
     def valuesFromList(self,theList) :
-	values = ""
-	for value in theList:
-	    values += ",'" + psycopg2.extensions.adapt(value) + "'"
+	    values = ""
+	    for value in theList:
+	        values += ",'" + psycopg2.extensions.adapt(value) + "'"
 
-	return(self.leadingComma.sub('',values))
+	    return(self.leadingComma.sub('',values))
 
 
     # Routine to form the list of items to choose from a query
     def queryVariables(self,theVariables) :
-	query = ""
-	for item in theVariables:
-	    query += "," + item
+	    query = ""
+	    for item in theVariables:
+	        query += ',"{0}"'.format(item)
 
-	return(" " + self.leadingComma.sub('',query)+ " ")
+	    return(" " + self.leadingComma.sub('',query)+ " ")
 
 
     # Routine to concatenate a set of "joins" to form a single
     # string for the joins.
     def formJoin(self,firstTableName,theTables) :
-	# theTables is a list:
-	#[ ....., [table name to join, type (left/right/full/- leave blank to make an "inner"),
-	#         [ [table 1,variable name,table 2,variabe name],[...]]], .... ]
-	#
+	    # theTables is a list:
+	    #[ ....., [table name to join, type (left/right/full/- leave blank to make an "inner"),
+	    #         [ [table 1,variable name,table 2,variabe name],[...]]], .... ]
+	    #
 
-	join = firstTableName + " "
-	for table in theTables:
-	    #print(table)
-	    if(len(table)==3) :
-		if(table[1]) :
-		    join += table[1] + " join "
-		else :
-		    join += "inner join "
+        join = firstTableName + " "
+        for table in theTables:
+            print(table)
+            if(len(table)==3) :
+                if(table[1]) :
+                    join += table[1] + " join "
+                else :
+                    join += "inner join "
 
-		join += table[0] + " on ("
-		for tableVars in table[2] :
-		    if(len(tableVars) >= 4) :
-			join += tableVars[0] + "." + tableVars[1] + \
-				"=" + tableVars[2] + "." + tableVars[3] + " AND "
+                join += table[0] + " on "
 
-		join = self.trailingAND.sub(') ',join)
+                for tableVars in table[2] :
+                    if(len(tableVars) >= 4) :
+                        join += '"'+tableVars[0] + "." + tableVars[1] + '"' + \
+                                "=" + '"' + tableVars[2] + "." + tableVars[3] + '"' + " AND "
+
+                join = self.trailingAND.sub('\n ',join)
 		
-	return(join)
+        return(join)
 
 
     # Routine to create a transaction. A list is given that holds each command
     def formTransaction(self,theCommands) :
-	transaction = "BEGIN;"
-	for command in theCommands:
-	    if(self.checkSemiColon.search(command)) :
-		transaction += command 
-	    else :
-		transaction += command + ";"
+	    transaction = "BEGIN;"
+	    for command in theCommands:
+	        if(self.checkSemiColon.search(command)) :
+		        transaction += command 
+	        else :
+		        transaction += command + ";"
 
-	return(transaction + "COMMIT;")
+	    return(transaction + "COMMIT;")
     
     
 
@@ -209,6 +210,6 @@ if (__name__ == "__main__") :
     print(db.queryVariables(["a.1","a.2","b.4"]))
 
     print(db.formJoin("first",[["second","",[["first","c1","second","c2"],["first","c2","third","c3"]]],
-			       ["third","RIGHT",[["first","c2","third","c4"],["third","c4","second","c2"]] ] ]))
+			                ["third","RIGHT",[["first","c2","third","c4"],["third","c4","second","c2"]] ] ]))
 
     print(db.formTransaction(["select;","next; ","third","fourth; \t","final "]))
