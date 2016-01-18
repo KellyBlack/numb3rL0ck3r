@@ -27,26 +27,24 @@
  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. *#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-</%doc><html>
-<!-- start template/basePage.tmp -->
-<%include file="preamble.tmpl"/>
-<body>
-<div id="wholePage">
-<%include file="header.tmpl"/>
-<!-- ${templateDir} -->
-<div id="page_center">
-<%include file="sidebar.tmpl"/>
+</%doc>
+<%inherit file="basePage.tmpl"/>
 
-<div id="content">
 <%block name="mainContent">
-<%include file="loginBox.tmpl"/>
-<p>Need course information down the middle. </p>
+% if not emailMatches:
+<p>The email addresses did not match. Please review and correct the email addresses.</p>
+% endif
+% if not passwordMatches:
+<p>The passwords did not match. Please re-enter your passwords.</p>
+% endif
+<form action="./newUser.cgi" method="POST" id="newUserForm">
+<p>Your email address will be used as your user name. Please enter your email address and an initial password:</p>
+<table>
+<tr><td>Email address:       </td><td><input type="text" name="email" id="email_input" value="${email}"></td></tr>
+<tr><td>Confirm new address: </td><td><input type="text" name="email_confirm" id="email_confirm_input" value="${email_confirm}"></td></tr>
+<tr><td>Password:            </td><td><input type="password" name="password" id="password" value="${password}"></td></tr>
+<tr><td>Confirm password:    </td><td><input type="password" name="password_confirm" id="password_confirm" value="${password_confirm}"></td></tr>
+</table>
+<input type="reset" value="Reset"><input type="submit" value="Submit">
+</form>
 </%block>
-</div>
-
-</div>
-<%include file="footer.tmpl"/>
-</div>
-</body>
-<!-- end template/basePage.tmp -->
-</html>

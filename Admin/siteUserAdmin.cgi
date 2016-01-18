@@ -2,7 +2,7 @@
 
 #
 #
-# Copyright (c) 2012, Kelly Black (kjblack@gmail.com)
+# Copyright (c) 2011-2012, Kelly Black (kjblack@gmail.com)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,54 +34,37 @@
 #
 #
 
+import sys
+import os
+sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
-
-import cgi
-formValues = cgi.FieldStorage()
+#import cgi
+#formValues = cgi.FieldStorage()
 
 # Enable debugging - comment this out for production! *TODO*
 import cgitb
 cgitb.enable()
 
-
-
-
-
-
 # Get the class to deal with user management
 from User.Authorize import Authorize
 authorization = Authorize()
 
-
-# Check to see if a user name and password form was submitted
-if(('userID' in formValues) and ('passwd' in formValues)):
-    # for now just create a cookie.
-    authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
-
-
-
-# Get the configuration information 
+# Get the configuration information
 from config.Config import Config
-localConfig = Config()
+localConfig = Config('../')
 localConfig.parseConfigurationFile()
 
 # Get the authorization information
 authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
 
+from Controller.AdminController import BaseAdminController
+mainControl = None    # Default controller 
+
+# TODO - need a check here to see if this person has admin permissions
 
 # get the controler to print the page
-from Controller.BaseController import BaseController
-mainControl = BaseController('userid???','basePage.tmpl',
-			     localConfig.diskOptions['templateDir'])
-mainControl.renderPage(loginBox=authorization.userAuthorized(),
-		       username=authorization.getUserName(),
-		       **localConfig.getConfigurationDict())
-
-
-# Print out all the environment info
-#print("<p>hello</p>")
-#for key,value in os.environ.iteritems():
-#    print("{0} - {1}<br>".format(key,value))
+if(not mainControl):
+    mainControl = BaseAdminController('Admin/siteUserAdmin.tmpl',
+				      localConfig.diskOptions['templateDir'])
+mainControl.renderPage(**localConfig.getConfigurationDict())
 

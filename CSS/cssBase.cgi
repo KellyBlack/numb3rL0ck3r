@@ -36,52 +36,28 @@
 
 
 
-import cgi
-formValues = cgi.FieldStorage()
-
 # Enable debugging - comment this out for production! *TODO*
 import cgitb
 cgitb.enable()
 
 
+# Print out the http header. (Assumes everything that follows is
+# printable material if it is commented out!)
+# print("Content-Type: text/html\n\n")
+
+# Print out the http header. (Assumes everything that follows is
+# printable material!)
+print("Content-Type: text/css\n\n")
+
+# Read in the necessary mako template classes
+from mako.template import Template
+from mako.lookup import TemplateLookup
+templateLookup = TemplateLookup(directories=['./'])
 
 
+# get the template for the main page.
 
+t = Template(filename='template/css/base.tmpl',lookup=templateLookup)
 
-# Get the class to deal with user management
-from User.Authorize import Authorize
-authorization = Authorize()
-
-
-# Check to see if a user name and password form was submitted
-if(('userID' in formValues) and ('passwd' in formValues)):
-    # for now just create a cookie.
-    authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
-
-
-
-# Get the configuration information 
-from config.Config import Config
-localConfig = Config()
-localConfig.parseConfigurationFile()
-
-# Get the authorization information
-authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
-
-
-# get the controler to print the page
-from Controller.BaseController import BaseController
-mainControl = BaseController('userid???','basePage.tmpl',
-			     localConfig.diskOptions['templateDir'])
-mainControl.renderPage(loginBox=authorization.userAuthorized(),
-		       username=authorization.getUserName(),
-		       **localConfig.getConfigurationDict())
-
-
-# Print out all the environment info
-#print("<p>hello</p>")
-#for key,value in os.environ.iteritems():
-#    print("{0} - {1}<br>".format(key,value))
+print(t.render(templateDir="template/css"))
 

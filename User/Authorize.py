@@ -42,22 +42,24 @@
 import hmac
 import hashlib
 
-# Import the modules necessary for reading the cookies
+# Import the modules necessary for reading and parsing the cookies
 import Cookie
 import os
+import re
 
 
 
 class Authorize :
-
-    def __init__(self,passPhrase="",hash="") :
+    parseUserCookie = re.compile(r'^(?P<user>.*);(?P<hash>[a-zA-Z0-9]*)')
+    
+    def __init__(self,passPhrase="",theHash="") :
         # Assume not logged in
         self.authorized = False
         self.username = ""
 
 	# Set the passphrase and hash.
 	self.setPassPhrase(passPhrase)
-	self.setRemoteHash(hash)
+	self.setRemoteHash(theHash)
 
 
 	# Get the cookies and see what we've got...
@@ -71,7 +73,23 @@ class Authorize :
 	    #print("No cookies")
 	    pass # Should we do something here?
 
+        if('user' in self.cookies) :
+            theUser = ''
+            theHash = ''
+            check = self.parseUserCookie.search(self.cookies['user'].value)
+            try:
+                theUser = check.group('user')
+            except IndexError:
+                #print("user not there")
+                return
 
+            try:
+                theHash = check.group('hash')
+            except IndexError:
+                #print("hash not there")
+                return
+
+            self.authorized = self.checkUserHash(theUser,theHash)
 
     def setPassPhrase(self,value):
 	self.passPhrase = value
@@ -84,17 +102,23 @@ class Authorize :
 	#print("Using passphrase: {0}".format(self.getPassPhrase()))
 	self.digest = hmac.new(self.getPassPhrase(),'',hashlib.sha1)
 
-    def setRemoteHash(self,hash) :
-	self.remoteHash = hash
+    def setRemoteHash(self,theHash) :
+	self.remoteHash = theHash
 
     def getHash(self,message) :
 	self.resetDigest()
 	self.digest.update(message)
 	return(self.digest.hexdigest())
 
-    def isAuthorized(self,message,hash) :
-	#print("New hash: {0} sent hash: {1}".format(self.getHash(message),hash))
-	return(self.getHash(message)==hash)
+    def isAuthorized(self,message,theHash) :
+	#print("New hash: {0} sent hash: {1}".format(self.getHash(message),theHash))
+	return(self.getHash(message)==theHash)
+
+    def checkUserHash(self,user,theHash):
+        # TODO - get the user's hash from the datbase and compare
+        # THis is the hash that comes from the cookie.
+        return(True)
+        
 
     def hmacSHA1(self,message) :
 	return(False)
@@ -108,39 +132,61 @@ class Authorize :
 		print("{0} - {1} - {2}<br>".format(num,key,value.value))
 		num = num + 1
 
+
+    def deleteCookies(self):
+	# Print out any cookies we might have.
+	if(self.haveCookies):
+	    #print("<p>We have cookies!</p>")
+	    for key,value in self.cookies.iteritems():
+                print('Set-Cookie:{0}=""; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'.format(key))
+
+
     def setUser(self,username,password):
 	# Routine to set the user name for this person
-	# TODO Need to properly set the cookie. For now just do something silly until we get the cookie thing working.
+
+	# TODO Need to properly set the cookie. For now just do
+	# something silly until we get the cookie thing working.
         self.username = username
-	self.cookies['user'] = username
+	self.cookies['user'] = username + ";" + "hash"
 	self.cookies['user']['path']    = '/'  # TODO change the path!
-	self.cookies['user']['domain']  = 'clarkson.edu' # TODO change the domain!
-	#self.cookies['user']['expires'] =
+	self.cookies['user']['domain']  = 'playroom.edu' # TODO change the domain!
+        self.cookies['user']['expires'] = 60*60*24
 	
 
     def checkUser(self,username,password):
 	#routine to check to see if the user and password are correct
 	# TODO add a check to see if the hash matches.
-        self.authorized = True
-	self.setUser(username,password)
-	return(True)
+        self.authorized = self.checkPassword(username,password)
+        if(self.authorized):
+            self.setUser(username,password)
+            self.printCookie()
+	return(self.authorized)
 
+    def checkPassword(self,username,password):
+        return(True) # TODO - check the hash that is in the database.
+        
     def printCookie(self):
 	print(self.cookies.output())
 
     def userAuthorized(self):
+	# TODO - fix this
         return(self.authorized)
 
     def getUserName(self):
+	# TODO - fix this
         return(self.username)
+
+    def checkUserNameExists(self,username):
+	# TODO - fix this
+	return(False)
 
 if (__name__ =='__main__') :
     auth = Authorize()
     auth.setPassPhrase('123')
-    hash = auth.getHash('hello')
-    print(hash)
-    print(type(hash))
-    if(auth.isAuthorized('hello',hash)) :
+    theHash = auth.getHash('hello')
+    print(theHash)
+    print(type(theHash))
+    if(auth.isAuthorized('hello',theHash)) :
 	print("it is good")
 
     if(auth.isAuthorized('hello','bubba')) :

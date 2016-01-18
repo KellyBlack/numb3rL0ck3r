@@ -34,54 +34,53 @@
 #
 #
 
+from mako.template import Template
+from mako.lookup import TemplateLookup
+
+from BaseController import BaseController
 
 
-import cgi
-formValues = cgi.FieldStorage()
+class BaseAdminController(BaseController):
 
-# Enable debugging - comment this out for production! *TODO*
-import cgitb
-cgitb.enable()
+    def __init__(self,templateName='',templateDir='./'):
+	BaseController.__init__(self,0,templateName,templateDir)
 
 
+class LabAdminController(BaseAdminController):
+
+    def __init__(self,templateName='',templateDir='./'):
+	BaseAdminController.__init__(self,0,templateName,templateDir)
+
+
+class ClassAdminController(BaseAdminController):
+
+    def __init__(self,templateName='',templateDir='./'):
+	BaseAdminController.__init__(self,0,templateName,templateDir)
+
+
+class SiteAdminController(BaseAdminController):
+
+    def __init__(self,templateName='',templateDir='./'):
+	BaseAdminController.__init__(self,0,templateName,templateDir)
 
 
 
 
-# Get the class to deal with user management
-from User.Authorize import Authorize
-authorization = Authorize()
+if (__name__ =='__main__') :
+    import sys
+    import os
+    sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
+    #local classes for Numb3r L0ck3r
+    from config.Config import Config
+    localConfig = Config('../')
+    localConfig.parseConfigurationFile()
 
-# Check to see if a user name and password form was submitted
-if(('userID' in formValues) and ('passwd' in formValues)):
-    # for now just create a cookie.
-    authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
-
-
-
-# Get the configuration information 
-from config.Config import Config
-localConfig = Config()
-localConfig.parseConfigurationFile()
-
-# Get the authorization information
-authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
-
-
-# get the controler to print the page
-from Controller.BaseController import BaseController
-mainControl = BaseController('userid???','basePage.tmpl',
-			     localConfig.diskOptions['templateDir'])
-mainControl.renderPage(loginBox=authorization.userAuthorized(),
-		       username=authorization.getUserName(),
-		       **localConfig.getConfigurationDict())
-
-
-# Print out all the environment info
-#print("<p>hello</p>")
-#for key,value in os.environ.iteritems():
-#    print("{0} - {1}<br>".format(key,value))
+    # get the controler to print the page
+    from Controller.AdminController import BaseAdminController
+    #print(localConfig.diskOptions['templateDir'])
+    mainControl = BaseAdminController('basePage.tmpl',localConfig.diskOptions['templateDir'])
+    mainControl.renderPage(loginBox = '',
+			   username='',
+			   **localConfig.getConfigurationDict())
 

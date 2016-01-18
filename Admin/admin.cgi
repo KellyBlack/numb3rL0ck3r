@@ -33,29 +33,38 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 #
+
 import sys
 import os
 sys.path.append( os.path.join( os.getcwd(), '..' ) )
 
+#import cgi
+#formValues = cgi.FieldStorage()
 
-# Make template classes
-from mako.template import Template
-from mako.lookup import TemplateLookup
-templateLookup = TemplateLookup(directories=['./'])
+# Enable debugging - comment this out for production! *TODO*
+import cgitb
+cgitb.enable()
 
+# Get the class to deal with user management
+from User.Authorize import Authorize
+authorization = Authorize()
 
-#local classes for Numb3r L0ck3r
+# Get the configuration information
 from config.Config import Config
-
-
-localConfig = Config()
+localConfig = Config('../')
 localConfig.parseConfigurationFile()
 
-t = Template(filename='template/loginAttempt.tmpl',lookup=templateLookup)
+# Get the authorization information
+authorization = Authorize(localConfig.getPassPhrase())
 
-#print(page)
-print(t.render(templateDir="template",
-	       usernameError=True,
-	       passwordError=False,
-	       **localConfig.getConfigurationDict()))
+from Controller.AdminController import BaseAdminController
+mainControl = None    # Default controller 
+
+# TODO - need a check here to see if this person has admin permissions
+
+# get the controler to print the page
+if(not mainControl):
+    mainControl = BaseAdminController('Admin/baseAdmin.tmpl',
+				      localConfig.diskOptions['templateDir'])
+mainControl.renderPage(**localConfig.getConfigurationDict())
 

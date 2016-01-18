@@ -27,26 +27,10 @@
  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. *#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-</%doc><html>
-<!-- start template/basePage.tmp -->
-<%include file="preamble.tmpl"/>
-<body>
-<div id="wholePage">
-<%include file="header.tmpl"/>
-<!-- ${templateDir} -->
-<div id="page_center">
-<%include file="sidebar.tmpl"/>
+</%doc>
+<%inherit file="../basePage.tmpl"/>
 
-<div id="content">
 <%block name="mainContent">
-<%include file="loginBox.tmpl"/>
-<p>Need course information down the middle. </p>
+<h2>Edit Sections</h2>
+<p>Change sections, delete sections, or add new sections.</p>
 </%block>
-</div>
-
-</div>
-<%include file="footer.tmpl"/>
-</div>
-</body>
-<!-- end template/basePage.tmp -->
-</html>

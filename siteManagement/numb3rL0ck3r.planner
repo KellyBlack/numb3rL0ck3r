@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project name="" company="" manager="" phase="" project-start="20120224T000000Z" mrproject-version="2" calendar="1">
+  <properties/>
+  <phases/>
+  <calendars>
+    <day-types>
+      <day-type id="0" name="Working" description="A default working day"/>
+      <day-type id="1" name="Nonworking" description="A default non working day"/>
+      <day-type id="2" name="Use base" description="Use day from base calendar"/>
+    </day-types>
+    <calendar id="1" name="Default">
+      <default-week mon="0" tue="0" wed="0" thu="0" fri="0" sat="1" sun="1"/>
+      <overridden-day-types>
+        <overridden-day-type id="0">
+          <interval start="0800" end="1200"/>
+          <interval start="1300" end="1700"/>
+        </overridden-day-type>
+      </overridden-day-types>
+      <days/>
+    </calendar>
+  </calendars>
+  <tasks>
+    <task id="1" name="Read and write cookies" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="25" priority="0" type="milestone" scheduling="fixed-work"/>
+    <task id="2" name="Have index.cgi update login box depending on user stauts" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work"/>
+    <task id="3" name="Access databse" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work"/>
+    <task id="4" name="login.cgi for logging into any page" note="" work="0" start="20120224T000000Z" end="20120224T000000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work"/>
+    <task id="5" name="Add an en_US directory and move templates below it." note="" work="28800" start="20120224T000000Z" end="20120224T170000Z" work-start="20120224T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+  </tasks>
+  <resource-groups/>
+  <resources/>
+  <allocations/>
+</project>

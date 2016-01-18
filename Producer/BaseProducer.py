@@ -35,53 +35,18 @@
 #
 
 
+class BaseProducer:
 
-import cgi
-formValues = cgi.FieldStorage()
+    def __init__(self,table=''):
+	self.setMyTableName(table)
 
-# Enable debugging - comment this out for production! *TODO*
-import cgitb
-cgitb.enable()
+    def setMyTableName(self,theName) :
+	self.tableName = theName
 
-
-
-
-
-
-# Get the class to deal with user management
-from User.Authorize import Authorize
-authorization = Authorize()
-
-
-# Check to see if a user name and password form was submitted
-if(('userID' in formValues) and ('passwd' in formValues)):
-    # for now just create a cookie.
-    authorization.checkUser(formValues['userID'].value,formValues['passwd'].value)
-
-
-
-# Get the configuration information 
-from config.Config import Config
-localConfig = Config()
-localConfig.parseConfigurationFile()
-
-# Get the authorization information
-authorization = Authorize(localConfig.getPassPhrase())
-#authorization.printCookieInformation()
-#print("Authorized: {0}".format(authorization.userAuthorized()))
-
-
-# get the controler to print the page
-from Controller.BaseController import BaseController
-mainControl = BaseController('userid???','basePage.tmpl',
-			     localConfig.diskOptions['templateDir'])
-mainControl.renderPage(loginBox=authorization.userAuthorized(),
-		       username=authorization.getUserName(),
-		       **localConfig.getConfigurationDict())
-
-
-# Print out all the environment info
-#print("<p>hello</p>")
-#for key,value in os.environ.iteritems():
-#    print("{0} - {1}<br>".format(key,value))
-
+    def createLeftOuterJoin(self,index,myColumn,otherTable,otherColumn):
+	# Routine to create a set of clauses for an inner join. For
+	# making a class for a join with my table, the given column
+	# and the other table and column.
+	return(" LEFT OUTER JOIN " +  otherTable + \
+	       " USING " + self.tableName + "." + myColumn + \
+	       "=" + otherTable + "." + otherColumn)

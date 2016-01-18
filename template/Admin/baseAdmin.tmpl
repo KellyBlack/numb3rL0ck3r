@@ -27,26 +27,34 @@
  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. *#
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-</%doc><html>
-<!-- start template/basePage.tmp -->
-<%include file="preamble.tmpl"/>
-<body>
-<div id="wholePage">
-<%include file="header.tmpl"/>
-<!-- ${templateDir} -->
-<div id="page_center">
-<%include file="sidebar.tmpl"/>
+</%doc>
+<%inherit file="../basePage.tmpl"/>
 
-<div id="content">
 <%block name="mainContent">
-<%include file="loginBox.tmpl"/>
-<p>Need course information down the middle. </p>
-</%block>
-</div>
+<h2>Administrative Options</h2>
+<p>Please choose one of the following options:</p>
+<ul>
+<li>Laboratories</li>
+<ul>
+<li><a href="./labData.cgi">Lab Data</a></li>
+<li><a href="studentData.cgi">Student Data</a></li>
+</ul>
 
-</div>
-<%include file="footer.tmpl"/>
-</div>
-</body>
-<!-- end template/basePage.tmp -->
-</html>
+<li>Classes</li>
+<ul>
+<li><a href="./classConfig.cgi">Class Configuration</a></li>
+<li><a href="./classData.cgi">Data/Labels</a></li>
+<li><a href="./classEdit.cgi">Create/Delete/Edit Labs</a></li>
+<li><a href="./classSections.cgi">Create/Delete/Edit Sections</a></li>
+<li><a href="./classHelp.cgi">Help</a></li>
+</ul>
+
+<li>Site Menu</li>
+<ul>
+<li><a href="./siteTemplates.cgi">Templates</a></li>
+<li><a href="./siteUserAdmin.cgi">User Admin</a></li>
+<li><a href="./sitePermissions.cgi">Permissions</a></li>
+</ul>
+
+</ul>
+</%block>
